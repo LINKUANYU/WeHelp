@@ -1,3 +1,9 @@
+html{
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+body{margin: 0px;}
+
 .flex{
     display: flex;
     margin: 10px;
@@ -16,11 +22,6 @@
 .item{
     margin-left: 20px;
     text-align: center;
-}
-
-html{
-    font-size: 20px;
-    font-family: 'Times New Roman', Times, serif;
 }
 
 #welcome{
