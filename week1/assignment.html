@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
         <title>week1 assginment</title>
         <link rel="stylesheet" type="text/css" href="layout.css">
     </head>
     <body>
         <div class="flex">
-            <div class="left">My website</div>
+            <div>My website</div>
             <div class="right">
-                <div class="item">Item 1</div>
-                <div class="item">Item 2</div>
-                <div class="item">Item 3</div>
-                <div class="item">Item 4</div>
+                <div class="item desktop">Item 1</div>
+                <div class="item desktop">Item 2</div>
+                <div class="item desktop">Item 3</div>
+                <div class="item desktop">Item 4</div>
+                <div class="mobile">
+                    <img class="hamburger" src="https://cdn1.iconfinder.com/data/icons/jumpicon-basic-ui-line-1/32/-_Hamburger-Menu-More-Navigation-List-512.png">
+                </div>
             </div>
         </div>
+        <div class="off-screen-menu">
+            <div class="close">
+                <img src="https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/33/9.12-256.png">
+            </div>
+            <div class="item">Item 1</div>
+            <div class="item">Item 2</div>
+            <div class="item">Item 3</div>
+            <div class="item">Item 4</div> 
+        </div>
+
         <div id="welcome">
             <div id="title">Welcome to MyHome</div>
         </div>
@@ -87,5 +100,17 @@
                 </div>
             </div>
         </div>
+        <script>
+            const hamburger = document.querySelector('.mobile');
+            const offScreenMenu = document.querySelector('.off-screen-menu');
+            const close = document.querySelector('.close');
+            hamburger.addEventListener('click', () => {
+                offScreenMenu.classList.toggle('active');
+            })
+            close.addEventListener('click', ()=>{
+                offScreenMenu.classList.toggle('active');
+            })
+        </script>
     </body>
+
 </html>
