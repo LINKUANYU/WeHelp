@@ -27,16 +27,17 @@ body{margin: 0px;}
 .desktop{display: block;}
 .mobile{display: none;}
 
-#welcome{
+.welcome{
     display: flex;
     justify-content: center;
     align-items: center;
     background-color:  #D6EBF6;
     height: 250px;
     width: 100%;
-    
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
 }
-#title{font-size: 2rem; font-weight: bold;}
 
 .main{
     width: 1200px;
