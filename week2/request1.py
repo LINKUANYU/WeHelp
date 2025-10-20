@@ -46,7 +46,10 @@ def function1(name):
             min_key.append(key)
     print("最遠", "、".join(max_key), ";最近", "、".join(min_key))
 
-print("================Task1================")
+            
+
+
+
 function1("辛巴")
 function1("悟空")
 function1("佛利沙")
