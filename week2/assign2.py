@@ -51,3 +51,33 @@ function1("辛巴")
 function1("悟空")
 function1("佛利沙")
 function1("特南克斯")
+
+
+
+
+
+def func3(n):
+    arr = []
+
+    count1 = -2
+    count2 = -3
+    count3 = 1
+    count4 = 2
+
+    arr.append(25)
+    for i in range(1, n+1):
+        if i % 4 == 1:
+            arr.append(arr[i-1] + count1)
+        if i % 4 == 2:
+            arr.append(arr[i-1] + count2)
+        if i % 4 == 3:
+            arr.append(arr[i-1] + count3)
+        if i % 4 == 0:
+            arr.append(arr[i-1] + count4)
+    print(arr[n])
+
+print("================Task3================")
+func3(1)
+func3(5)
+func3(10)
+func3(30)
