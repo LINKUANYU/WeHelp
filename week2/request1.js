@@ -4,7 +4,7 @@ function function1(name){
     // check section and decide if it needs extra point
     // find the closest and farest
     
-    people = [
+    const people = [
         {"name": "悟空", "pos": [0, 0]},
         {"name": "辛巴", "pos": [-3, 3]},
         {"name": "貝吉塔", "pos": [-4, -1]},
@@ -13,77 +13,64 @@ function function1(name){
         {"name": "丁滿", "pos": [-1, 4]},
     ];
     
-    let section1 = ["悟空", "辛巴", "貝吉塔", "特南克斯"];
-    let section2 = ["佛利沙", "丁滿"];
-    // find out pos of the name
+    const section1 = ["悟空", "辛巴", "貝吉塔", "特南克斯"];
+    const section2 = ["佛利沙", "丁滿"];
+
+    // find name itself and find pos
+    const me = people.find(p => p.name === name);
+    if (!me) return console.log("No exsist person");
+    const POS = me.pos;
     
-    for (let i = 0; i < people.length; i++){
-        if (people[i].name == name){
-            POS = people[i].pos;
-            break;
-        }
-    }
     // check section
-    function check_section(name){
-        for (let i = 0; i < section1.length; i++){
-            if (section1[i] === name){
-                return 1;
-            }
-        }
-        for (let i = 0; i < section2.length; i++){
-            if (section2[i] === name){
-                return 2;
-            }
-        }
-        return console.log("Not Found");
-    }
+    const check_section = (n) => (section1.includes(n) ? 1 : section2.includes(n) ? 2 : null);
 
     let target_section = check_section(name);
 
     // calculate the distance
-    let extrapoint = 2;
-    let new_list = [];
+    const extrapoint = 2;
+    const new_list = [];
     for (let i = 0; i < people.length; i++){
+        let person = people[i];
         // skip itself
-        if (people[i].name == name){
+        if (person.name === name){
             continue;
         }
-        // same section
-        else if (check_section(people[i].name) === target_section){
-            distance_raw = Math.abs(people[i].pos[0] - POS[0]) + Math.abs(people[i].pos[1] - POS[1]);
-        }
+        // distance 
+        let distance_raw = Math.abs(person.pos[0] - POS[0]) + Math.abs(person.pos[1] - POS[1]);
+
         // different section
-        else if (check_section(people[i].name) != target_section){
-            distance_raw = Math.abs(people[i].pos[0] - POS[0]) + Math.abs(people[i].pos[1] - POS[1]) + extrapoint;
+        const sec = check_section(person.name);
+        if (sec !== target_section){
+            distance_raw += extrapoint;
         }
         // make new list to put result
-        new_list.push({[people[i].name] : distance_raw});
+        new_list.push({[person.name] : distance_raw});
     }
 
     // find the closest
     let min = Infinity;
     let min_list = [];
     for (o of new_list){
-        [name, value] = Object.entries(o)[0]
+        const [who, value] = Object.entries(o)[0]
         if (value < min){
             min = value;
-            min_list = [name]; // don't use push. new value should overwrite everything.
+            min_list = [who]; // don't use push. new value should overwrite everything.
         }
         else if (value === min){
-            min_list.push(name);
+            min_list.push(who);
         }
     }
     //find the farest
     let max = -Infinity;
     let max_list = [];
     for (o of new_list){
-        [name, value] = Object.entries(o)[0];
+        const [who, value] = Object.entries(o)[0];
         if (value > max){
             max = value;
-            max_list = [name];  // don't use push. new value should overwrite everything.
+            max_list = [who];  // don't use push. new value should overwrite everything.
         }
         else if(value === max){
-            max_list.push(name);
+            max_list.push(who);
         }
     }
     console.log("最遠", max_list.join("、"), "; 最近", min_list.join("、"));

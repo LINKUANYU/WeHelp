@@ -1,8 +1,4 @@
 def function1(name):
-    # your code
-    
-    
-    
     people: dict[str, tuple[int, int]]={
         "悟空": (0, 0),
         "辛巴": (-3, 3),
@@ -16,12 +12,12 @@ def function1(name):
 
     distance: dict[str, int] = {}
     
-    def area(name):
+    def find_section(name):
         if name in section1:
             return 1
         elif name in section2:
             return 2
-    sec0 = area(name)
+    target_section = find_section(name)
     extra_point = 2
 
     for n in people:
@@ -29,10 +25,10 @@ def function1(name):
             continue
         else:
             diff = abs(people[n][0] - people[name][0]) + abs(people[n][1] - people[name][1])
-        if area(n) != sec0:
+        if find_section(n) != target_section:
             diff = diff + extra_point
         distance[n] = diff
-
+        
     value_max = max(distance.values())
     value_min = min(distance.values())
     max_key = []
@@ -40,11 +36,10 @@ def function1(name):
     for key, value in distance.items():
         if value == value_max:
             max_key.append(key)
-    min_key = []
-    for key, value in distance.items():
         if value == value_min:
             min_key.append(key)
     print("最遠", "、".join(max_key), ";最近", "、".join(min_key))
+
 
 print("================Task1================")
 function1("辛巴")
@@ -53,7 +48,7 @@ function1("佛利沙")
 function1("特南克斯")
 
 def func2(ss, start, end, criteria):
-    # divide each element in criteria, 
+    # divide each element in criteria,
     def divide(criteria):
         criteria = criteria.replace(" ", "")
         for op in ("<=", ">=", "="):
@@ -63,54 +58,51 @@ def func2(ss, start, end, criteria):
                     if op != "=":
                         raise ValueError("name can only use '='")
                     return field, op, raw
-                if field == "r":
+                elif field == "r":
                     return field, op, float(raw)
-                if field == "c":
+                elif field == "c":
                     return field, op, int(raw)
+                else:
+                    raise ValueError("Error")
 
     field, op, val = divide(criteria)
-    # select qualified service
+    # select qualified service and put into candidates
     candidates = []
-    for s in services:
+    for s in ss:
         if op == "=":
             if s[field] == val:
                 candidates.append(s)
-        if op == "<=":
+        elif op == "<=":
             if s[field] <= val:
                 candidates.append(s)
-        if op == ">=":
+        elif op == ">=":
             if s[field] >= val:
                 candidates.append(s)
+    # take the best option
+    if len(candidates) == 0:
+        print("Error") 
+        return
     if op == "=":
         best = candidates[0]
-    if op == ">=":
+    elif op == ">=":
         best = min(candidates, key = lambda s : s[field])
-    if op == "<=":
+    elif op == "<=":
         best = max(candidates, key = lambda s : s[field])
+
     # make a schedule to record time for each service by list[dict{name, start, end}]
-    # first data print out directly
-    if len(schedule) == 0:
-        print(best["name"])
-        schedule.append({"name": best["name"], "start": start, "end": end})
-    
-    else:
-        # build a function to check schedule
-        def occupy(start, end):
-            for s in schedule:
-                if (start < s["end"] and start > s["start"]) or (end > s["start"] and end < s["end"]):
-                    return True
-        # check the new service if it's avalible in the schedule
-        for s in schedule:
-            if best["name"] == s["name"]:
-                if occupy(start, end):
-                    print("Sorry")
-                    return
-        print(best["name"])
-        schedule.append({"name": best["name"], "start": start, "end": end})
-                    
-    
+    def check_available(start, end, s):
+        if (start < s["end"] and end > s["start"]):
+            return False
+        return True
 
-
+    for s in schedules:
+        # same service about to be used
+        if s["name"] == best["name"]:
+            if check_available(start, end, s) == False:
+                print("Sorry")
+                return
+    print(best["name"])
+    schedules.append({"name": best["name"], "start": start, "end": end})
     
 
 services = [
@@ -118,7 +110,7 @@ services = [
     {"name": "S2", "r": 3, "c": 1200},
     {"name": "S3", "r": 3.8, "c": 800}
 ]
-schedule = []
+schedules = []
 
 print("================Task2================")
 func2(services, 15, 17, "c>=800")
@@ -129,62 +121,59 @@ func2(services, 16, 18, "r>=4")
 func2(services, 13, 17, "name=S1")
 func2(services, 8, 9, "c<=1500")
 
-
-
+# arr = [25, 23, 20, 21, 23, 21, 18, 19, 21, 19, 16, 17]
 def func3(n):
-    arr = []
+    arr = [None] * (n + 1)
 
     count1 = -2
     count2 = -3
     count3 = 1
     count4 = 2
 
-    arr.append(25)
+    arr[0] = 25
     for i in range(1, n+1):
         if i % 4 == 1:
-            arr.append(arr[i-1] + count1)
+            arr[i] = arr[i-1] + count1
         if i % 4 == 2:
-            arr.append(arr[i-1] + count2)
+            arr[i] = arr[i-1] + count2
         if i % 4 == 3:
-            arr.append(arr[i-1] + count3)
+            arr[i] = arr[i-1] + count3
         if i % 4 == 0:
-            arr.append(arr[i-1] + count4)
+            arr[i] = arr[i-1] + count4
     print(arr[n])
-
+    
 print("================Task3================")
 func3(1)
 func3(5)
 func3(10)
 func3(30)
 
-
-
 def func4(sp, stat, n):
+    # for loop put passage into car(difference), if meet car unavailable continue
+    # renew the min and record the ans each loop
+    # finish loop print result
+    import math
+    if len(sp) != len(stat):
+        print("Error")
+        return
     
-    
-    # put passage in to car, the most fittest car (take differences and make new arr)
-    new_sp = [None] * len(sp)
-    
+    min = math.inf
+    ans = -1
     for i in range(len(sp)):
-        new_sp[i] = abs(sp[i] - n)
-    
-    # take out the unavalible car (give it big number)
-    for i in range(len(stat)):
         if stat[i] == "1":
-            new_sp[i] = 100
-    # find the minimum number (most fittest)
-    min = 1000
-    for i in new_sp:
-        if i < min:
-            min = i
-    # find the sequence of the car
-    for n in range(len(new_sp)):
-        if new_sp[n] == min:
-            print(n)
-            break
+            continue
+        diff = abs(sp[i] - n)
+        if diff < min:
+            min = diff
+            ans = i
+    if ans == -1:
+        print("Not Found")
+        return
+    print(ans)
+
 
 print("================Task4================")
 func4([3, 1, 5, 4, 3, 2], "101000", 2)
 func4([1, 0, 5, 1, 3], "10100", 4)
-func4([4, 6, 5,], "1000", 4)
+func4([4, 6, 5, 8], "1000", 4)
 
