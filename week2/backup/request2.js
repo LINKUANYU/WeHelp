@@ -11,7 +11,7 @@ function func2(ss, start, end, criteria){
     else { console.log("Error"); return; }
 
     // make selector by condition
-    let result = []
+    let raw_results = []
     for (let i = 0; i < ss.length; i++){
         const v = ss[i][field];
         // if condition is name 
@@ -20,55 +20,59 @@ function func2(ss, start, end, criteria){
                 return console.log("Error: name can only use '='");
             }
             if (v === value){
-                result.push(ss[i]);
+                raw_results.push(ss[i]);
             }
         }
         // if condition is "r" or "c"
         if (op === ">="){
             if (Number(v) >= value){
-                result.push(ss[i]);
+                raw_results.push(ss[i]);
             }
         }
         if (op === "<="){
             if (Number(v) <= value){
-                result.push(ss[i]);
+                raw_results.push(ss[i]);
             }
         }
     }
-    if (result.length === 0){ console.log("Not Found"); return; }
+    if (raw_results.length === 0){ console.log("Not Found"); return; }
     // copy result and sort it
-    let order = [...result];
+    let results = [...raw_results];
     if (op === ">="){
-        order.sort((a,b) => Number(a[field]) - Number(b[field])); // from small to big
+        results.sort((a,b) => Number(a[field]) - Number(b[field])); // from small to big
     }
     else if (op === "<="){
-        order.sort((a,b) => Number(b[field]) - Number(a[field])); // from big to small
+        results.sort((a,b) => Number(b[field]) - Number(a[field])); // from big to small
     }
-    const bset_choice = order[0];
 
     // put best choice into schedule
     // if same name in schedule check time avalible
     // if avalible then put best choice in and print out service
-    function check_avalible(start, end, booking){
+    function overlap(start, end, booking){
         if (start < booking.end && end > booking.start){
-            return false
+            return true
         }
-        return true
+        return false
     }
 
-    // same service about to be used
-    for (let i = 0; i < schedules.length; i++){
-        if (bset_choice.name === schedules[i].name){
-            if (check_avalible(start, end, schedules[i]) === false){
-                console.log("Sorry");
-                return
+    // take each order and each schedule compaire 
+    // if the service name is the same check time available
+    // if overlap is true continue outside loop, finish compare all result(outside loop) -> failure print sorry
+    // if overlap is false keep going inside loop, finish compare all schedule(inside loop) -> success print result and push
+    
+    outer: for (let i = 0; i < results.length; i++){
+        for (let j = 0; j < schedules.length; j++){
+            if (results[i].name === schedules[j].name){
+                if (overlap(start, end, schedules[j]) === true){
+                    continue outer;
+                }
             }
         }
+        console.log(results[i].name);
+        schedules.push({"name": results[i].name, "start": start, "end": end});
+        return
     }
-    console.log(bset_choice.name);
-    schedules.push({"name": bset_choice.name, "start": start, "end": end});
-    return
-    
+    console.log("Sorry")
 }
     
 
