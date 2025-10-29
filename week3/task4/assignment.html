@@ -46,48 +46,41 @@
                 </div>
             </div>
             <div class="gallery">
-                <div class="card title1">
+                <div class="card title0">
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                     
                     
+                </div>
+                <div class="card title1">
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title2">
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
-                    
-                    
                 </div>
                 <div class="card title3">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title4">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title5">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title6">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title7">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title8">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
                 <div class="card title9">
-                    
                     <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
                 </div>
-                <div class="card title10">
-                    
-                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
-                </div>
+            </div>
+            <div class="more-area">
+                <button class="btn">Load more</button>
             </div>
         </div>
         <script type="module">
@@ -100,7 +93,7 @@
             close.addEventListener('click', ()=>{
                 offScreenMenu.classList.toggle('active');
             })
-
+            
             // week3
             const text_url = "https://cwpeng.github.io/test/assignment-3-1";
             const pic_url = "https://cwpeng.github.io/test/assignment-3-2";
@@ -117,7 +110,8 @@
                     return i >= 0 ? s.slice(0, i + 4) : s; // +4 把 ".jpg" 也包含進來
             }
 
-            function render(merge){
+            async function render_init(){
+                let merge = await getData();
                 const promo = document.querySelectorAll(".promo");
                 const card = document.querySelectorAll(".card");
                 // put  and text into html file
@@ -150,7 +144,7 @@
             }
 
             // connect to internet and get data
-            async function init(){
+            async function getData(){
                 try{
                     const [text_data, pic_data] = await Promise.all([
                     fetchJSON(text_url),
@@ -189,13 +183,62 @@
                     //    `{...o, ...rMap.get(o.id)}` is called a “spread merge.”
                     //    Fields from `a` (serial, name) go first, then fields from `b` (pic).
                     const merge = text_serial_filted.map(o =>({...o, ...pic_Map.get(String(o.serial))}));
-                    render(merge);
-
+                    return merge
                 } catch (err) {
                     console.error(err);
                 }
             }
-            init();
+            render_init();
+
+            // task4
+            const btn = document.querySelector(".btn");
+            btn.addEventListener('click', add_more);
+
+            async function add_more(){
+                // count how mant datas have been used
+                let promo_count = document.querySelectorAll('.promo').length;
+                let card_count = document.querySelectorAll('.card').length;
+                let count = promo_count + card_count;
+                // get data
+                let merge = await getData();
+                // target insert gallery pos
+                let galleries = document.querySelectorAll(".gallery");
+                let ref_gallery = galleries[galleries.length - 1];
+                // create galleries and cards
+                let gallery = document.createElement('div');
+                gallery.className = "gallery";
+                // create cards
+                for (let i = 0; i < 10; i++){
+                    // if run out of informations
+                    if (i + count >= merge.length){
+                        let msg = document.createElement('h3')
+                        msg.textContent = "No more information";
+                        let more_area = document.querySelector('.more-area');
+                        more_area.before(msg);
+                        break;
+                    }
+                    let card = document.createElement('div');
+                    card.className = `card title${i}`;
+                    let star = document.createElement('img');
+                    star.src = "https://www.svgrepo.com/show/243542/star.svg"
+                    star.className = "star";
+                    let img = document.createElement('img');
+                    img.className = "base-img";
+                    // [i + count] = previous datas which have been used
+                    img.src = merge[i + count].link;
+                    let img_title = document.createElement('div');
+                    img_title.className = "img-title";
+                    let img_title_text = document.createElement('div');
+                    img_title_text.className = "img-title-text";
+                    // [i + count] = previous datas which have been used
+                    img_title_text.textContent = merge[i + count].name;
+                    img_title.append(img_title_text);
+                    card.append(star, img, img_title);
+                    gallery.append(card);
+                }
+                ref_gallery.after(gallery);
+                ref_gallery = gallery;
+            }
         </script>
     </body>
 

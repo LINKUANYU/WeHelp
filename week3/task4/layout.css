@@ -75,16 +75,16 @@ body{margin: 0px;}
     column-gap: 20px;
 }
 
-.title1{ grid-area: t1; }
-.title2{ grid-area: t2; }
-.title3{ grid-area: t3; }
-.title4{ grid-area: t4; }
-.title5{ grid-area: t5; }
-.title6{ grid-area: t6; }
-.title7{ grid-area: t7; }
-.title8{ grid-area: t8; }
-.title9{ grid-area: t9; }
-.title10{ grid-area: t10; }
+.title0{ grid-area: t1; }
+.title1{ grid-area: t2; }
+.title2{ grid-area: t3; }
+.title3{ grid-area: t4; }
+.title4{ grid-area: t5; }
+.title5{ grid-area: t6; }
+.title6{ grid-area: t7; }
+.title7{ grid-area: t8; }
+.title8{ grid-area: t9; }
+.title9{ grid-area: t10; }
 
 .card{
     position: relative;
@@ -127,6 +127,14 @@ body{margin: 0px;}
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;     /* 要置中的話加這行 */
+}
+.more-area{
+    display: flex;
+    justify-content: center;
+}
+.btn{
+    height: 40px;
+    font-size: 0.8rem;
 }
     
 
