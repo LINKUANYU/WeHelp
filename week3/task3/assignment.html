@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <title>week1 assginment</title>
+        <link rel="stylesheet" type="text/css" href="layout.css">
+    </head>
+    <body>
+        <div class="flex">
+            <div>My website</div>
+            <div class="right">
+                <div class="item desktop">Item 1</div>
+                <div class="item desktop">Item 2</div>
+                <div class="item desktop">Item 3</div>
+                <div class="item desktop">Item 4</div>
+                <div class="mobile">
+                    <img class="hamburger" src="https://cdn1.iconfinder.com/data/icons/jumpicon-basic-ui-line-1/32/-_Hamburger-Menu-More-Navigation-List-512.png">
+                </div>
+            </div>
+        </div>
+        <div class="off-screen-menu">
+            <div class="close">
+                <img src="https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/33/9.12-256.png">
+            </div>
+            <div class="item">Item 1</div>
+            <div class="item">Item 2</div>
+            <div class="item">Item 3</div>
+            <div class="item">Item 4</div> 
+        </div>
+
+        <div class="welcome">Welcome to MyHome</div>
+        <div class="main">
+            <div class="promos">
+                <div class="promo block1">
+                    
+                    
+                </div>
+                <div class="promo block2">
+                    
+                    
+                </div>
+                <div class="promo block3">
+                    
+                    
+                </div>
+            </div>
+            <div class="gallery">
+                <div class="card title1">
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    
+                    
+                </div>
+                <div class="card title2">
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    
+                    
+                </div>
+                <div class="card title3">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title4">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title5">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title6">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title7">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title8">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title9">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+                <div class="card title10">
+                    
+                    <img class="star" src="https://www.svgrepo.com/show/243542/star.svg">
+                </div>
+            </div>
+        </div>
+        <script type="module">
+            const hamburger = document.querySelector('.mobile');
+            const offScreenMenu = document.querySelector('.off-screen-menu');
+            const close = document.querySelector('.close');
+            hamburger.addEventListener('click', () => {
+                offScreenMenu.classList.toggle('active');
+            })
+            close.addEventListener('click', ()=>{
+                offScreenMenu.classList.toggle('active');
+            })
+
+            // week3
+            const text_url = "https://cwpeng.github.io/test/assignment-3-1";
+            const pic_url = "https://cwpeng.github.io/test/assignment-3-2";
+
+            async function fetchJSON(url){
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                return res.json();
+            }
+            // pic_data filter link function
+            function cutToJpgOrEnd(s){
+                if (typeof s !== 'string') return '';
+                    const i = s.toLowerCase().indexOf('.jpg');
+                    return i >= 0 ? s.slice(0, i + 4) : s; // +4 把 ".jpg" 也包含進來
+            }
+            // connect to internet and get data
+            try{
+                const [text_data, pic_data] = await Promise.all([
+                fetchJSON(text_url),
+                fetchJSON(pic_url),
+                ]);
+                const text_list = text_data.rows;
+                const pic_list = pic_data.rows;
+                // make two list then merge into 1
+                let text_serial = [];
+                let pic_serial = [];
+                for(let i = 0; i < text_list.length; i++){
+                    text_serial.push({"serial": text_list[i].serial, "name": text_list[i].sname});
+                }
+
+                for (let i = 0; i < pic_list.length; i++){
+                    let raw = pic_list[i].pics;
+                    let firstlink = cutToJpgOrEnd(raw);
+                    firstlink = ("https://www.travel.taipei" + firstlink);
+                    pic_serial.push({"serial":pic_list[i].serial, "link": firstlink});
+                }
+
+                // use Map() to merge two data
+                // create a new Map(), which is lookup table for pic_data
+                // ① Turn `b` into a lookup table: serial -> object 
+                // 2 -> { serial: 2, pic: "b.jpg" } 
+                // 3 -> { serial: 3, pic: "c.jpg" }
+                const pic_Map = new Map(pic_serial.map(o => [String(o.serial), o]));
+
+                // filter text_serial by pic_serial -> remain serial exsist in both data
+                // ② First use filter to remove items in `a` that don’t have a matching serial in `b`.
+                //    pic_Map.has(o.id) means `b` also contains this serial.
+                //    Example: `a` has  1/2/3, but `b` only has 2/3/4, so serial=1 will be dropped.
+                const text_serial_filted = text_serial.filter(o => pic_Map.has(String(o.serial)));
+                // merge data together
+                // ③ Then use map to merge the corresponding objects from `a` and `b` into a new object.
+                //    `{...o, ...rMap.get(o.id)}` is called a “spread merge.”
+                //    Fields from `a` (serial, name) go first, then fields from `b` (pic).
+                const merge = text_serial_filted.map(o =>({...o, ...pic_Map.get(String(o.serial))}));
+
+                
+                const promo = document.querySelectorAll(".promo");
+                const card = document.querySelectorAll(".card");
+                // put  and text into html file
+                // first three part
+                for (let i = 0; i < promo.length; i++){
+                    let pic = document.createElement('img');
+                    pic.className = "promo-img";
+                    pic.src = merge[i].link;
+                    promo[i].appendChild(pic);
+                    
+                    let text = document.createElement('span')
+                    text.textContent = merge[i].name;
+                    promo[i].appendChild(text);
+                }
+                // main part
+                for (let i = 0 ; i < card.length; i++){
+                    let pic = document.createElement('img');
+                    pic.className = "base-img";
+                    pic.src = merge[i + promo.length].link;
+                    card[i].appendChild(pic)
+
+                    let text_father = document.createElement('div')
+                    text_father.className = 'img-title'
+                    let text = document.createElement('div')
+                    text.className = 'img-title-text'
+                    text.textContent = merge[i + promo.length].name;
+                    text_father.appendChild(text);
+                    card[i].appendChild(text_father);
+                }
+            } catch (err) {
+                // 5) 失敗處理：記錄與提示
+                console.error(err);
+                const msg = document.createElement('div');
+                msg.className = 'error';
+                msg.textContent = '資料載入失敗，請稍後再試。';
+                document.body.prepend(msg);
+            }
+
+        </script>
+    </body>
+
+</html>

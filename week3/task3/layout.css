@@ -118,6 +118,15 @@ body{margin: 0px;}
     justify-content: center;
     align-items: center;
     z-index: 1;
+
+.img-title-text{
+    flex: 1 1 auto;         /* 讓它可以縮 */
+    min-width: 0;           /* ⭐ 在 flex 裡很關鍵，否則不會縮、不會出現省略號 */
+    white-space: nowrap;    /* 單行 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;     /* 要置中的話加這行 */
+}
     
 }
 
