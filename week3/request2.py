@@ -50,6 +50,7 @@ result_likes = []
 result_times = []
     
 url = "https://www.ptt.cc/bbs/Steam/index.html"
+
 n = 0
 while n < 3:
     nextlink = "https://www.ptt.cc" + getData(url)
@@ -58,6 +59,6 @@ while n < 3:
     
 print(result_titles, result_likes, result_times)
 
-with open ("article.csv", "w", encode = "utf-8") as file:
-    for a, b ,c in zip(result_times, result_likes, result_titles):
+with open ("article.csv", "w", encoding = "utf-8", newline = "") as file:
+    for a, b ,c in zip(result_titles, result_likes, result_times):
         file.write(f'{a},{b},{c}\n')
