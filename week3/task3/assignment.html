@@ -101,7 +101,7 @@
                 offScreenMenu.classList.toggle('active');
             })
 
-            // week3
+            // week3 task3
             const text_url = "https://cwpeng.github.io/test/assignment-3-1";
             const pic_url = "https://cwpeng.github.io/test/assignment-3-2";
 
@@ -114,10 +114,11 @@
             function cutToJpgOrEnd(s){
                 if (typeof s !== 'string') return '';
                     const i = s.toLowerCase().indexOf('.jpg');
-                    return i >= 0 ? s.slice(0, i + 4) : s; // +4 把 ".jpg" 也包含進來
+                    return i >= 0 ? s.slice(0, i + 4) : s;
             }
-
-            function render(merge){
+            // initial page render
+            async function render_init(){
+                const merge = await getData();
                 const promo = document.querySelectorAll(".promo");
                 const card = document.querySelectorAll(".card");
                 // put  and text into html file
@@ -150,7 +151,7 @@
             }
 
             // connect to internet and get data
-            async function init(){
+            async function getData(){
                 try{
                     const [text_data, pic_data] = await Promise.all([
                     fetchJSON(text_url),
@@ -189,13 +190,13 @@
                     //    `{...o, ...rMap.get(o.id)}` is called a “spread merge.”
                     //    Fields from `a` (serial, name) go first, then fields from `b` (pic).
                     const merge = text_serial_filted.map(o =>({...o, ...pic_Map.get(String(o.serial))}));
-                    render(merge);
+                    return merge;
 
                 } catch (err) {
                     console.error(err);
                 }
             }
-            init();
+            render_init();
         </script>
     </body>
 

@@ -94,7 +94,7 @@
                 offScreenMenu.classList.toggle('active');
             })
             
-            // week3
+            // week3 task3
             const text_url = "https://cwpeng.github.io/test/assignment-3-1";
             const pic_url = "https://cwpeng.github.io/test/assignment-3-2";
 
@@ -107,9 +107,9 @@
             function cutToJpgOrEnd(s){
                 if (typeof s !== 'string') return '';
                     const i = s.toLowerCase().indexOf('.jpg');
-                    return i >= 0 ? s.slice(0, i + 4) : s; // +4 把 ".jpg" 也包含進來
+                    return i >= 0 ? s.slice(0, i + 4) : s;
             }
-
+            // initial page render
             async function render_init(){
                 let merge = await getData();
                 const promo = document.querySelectorAll(".promo");
@@ -190,7 +190,7 @@
             }
             render_init();
 
-            // task4
+            // week3 task4
             const btn = document.querySelector(".btn");
             btn.addEventListener('click', add_more);
 
@@ -201,9 +201,6 @@
                 let count = promo_count + card_count;
                 // get data
                 let merge = await getData();
-                // target insert gallery pos
-                let galleries = document.querySelectorAll(".gallery");
-                let ref_gallery = galleries[galleries.length - 1];
                 // create galleries and cards
                 let gallery = document.createElement('div');
                 gallery.className = "gallery";
@@ -236,8 +233,10 @@
                     card.append(star, img, img_title);
                     gallery.append(card);
                 }
+                // target insert gallery pos
+                let galleries = document.querySelectorAll(".gallery");
+                let ref_gallery = galleries[galleries.length - 1];
                 ref_gallery.after(gallery);
-                ref_gallery = gallery;
             }
         </script>
     </body>

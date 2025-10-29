@@ -42,8 +42,8 @@ for d in ch_list_sorted:
     found = False
     for a in area:
         if d["地址"] == a["name"]:
-            a["count"] = a["count"] + 1
-            a["rooms"] = a["rooms"] + int(d["房間數"])
+            a["count"] += 1
+            a["rooms"] += int(d["房間數"])
             found = True
             break
     if found:
