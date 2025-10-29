@@ -116,47 +116,8 @@
                     const i = s.toLowerCase().indexOf('.jpg');
                     return i >= 0 ? s.slice(0, i + 4) : s; // +4 把 ".jpg" 也包含進來
             }
-            // connect to internet and get data
-            try{
-                const [text_data, pic_data] = await Promise.all([
-                fetchJSON(text_url),
-                fetchJSON(pic_url),
-                ]);
-                const text_list = text_data.rows;
-                const pic_list = pic_data.rows;
-                // make two list then merge into 1
-                let text_serial = [];
-                let pic_serial = [];
-                for(let i = 0; i < text_list.length; i++){
-                    text_serial.push({"serial": text_list[i].serial, "name": text_list[i].sname});
-                }
 
-                for (let i = 0; i < pic_list.length; i++){
-                    let raw = pic_list[i].pics;
-                    let firstlink = cutToJpgOrEnd(raw);
-                    firstlink = ("https://www.travel.taipei" + firstlink);
-                    pic_serial.push({"serial":pic_list[i].serial, "link": firstlink});
-                }
-
-                // use Map() to merge two data
-                // create a new Map(), which is lookup table for pic_data
-                // ① Turn `b` into a lookup table: serial -> object 
-                // 2 -> { serial: 2, pic: "b.jpg" } 
-                // 3 -> { serial: 3, pic: "c.jpg" }
-                const pic_Map = new Map(pic_serial.map(o => [String(o.serial), o]));
-
-                // filter text_serial by pic_serial -> remain serial exsist in both data
-                // ② First use filter to remove items in `a` that don’t have a matching serial in `b`.
-                //    pic_Map.has(o.id) means `b` also contains this serial.
-                //    Example: `a` has  1/2/3, but `b` only has 2/3/4, so serial=1 will be dropped.
-                const text_serial_filted = text_serial.filter(o => pic_Map.has(String(o.serial)));
-                // merge data together
-                // ③ Then use map to merge the corresponding objects from `a` and `b` into a new object.
-                //    `{...o, ...rMap.get(o.id)}` is called a “spread merge.”
-                //    Fields from `a` (serial, name) go first, then fields from `b` (pic).
-                const merge = text_serial_filted.map(o =>({...o, ...pic_Map.get(String(o.serial))}));
-
-                
+            function render(merge){
                 const promo = document.querySelectorAll(".promo");
                 const card = document.querySelectorAll(".card");
                 // put  and text into html file
@@ -186,15 +147,55 @@
                     text_father.appendChild(text);
                     card[i].appendChild(text_father);
                 }
-            } catch (err) {
-                // 5) 失敗處理：記錄與提示
-                console.error(err);
-                const msg = document.createElement('div');
-                msg.className = 'error';
-                msg.textContent = '資料載入失敗，請稍後再試。';
-                document.body.prepend(msg);
             }
 
+            // connect to internet and get data
+            async function init(){
+                try{
+                    const [text_data, pic_data] = await Promise.all([
+                    fetchJSON(text_url),
+                    fetchJSON(pic_url),
+                    ]);
+                    const text_list = text_data.rows;
+                    const pic_list = pic_data.rows;
+                    // make two list then merge into 1
+                    let text_serial = [];
+                    let pic_serial = [];
+                    for(let i = 0; i < text_list.length; i++){
+                        text_serial.push({"serial": text_list[i].serial, "name": text_list[i].sname});
+                    }
+
+                    for (let i = 0; i < pic_list.length; i++){
+                        let raw = pic_list[i].pics;
+                        let firstlink = cutToJpgOrEnd(raw);
+                        firstlink = ("https://www.travel.taipei" + firstlink);
+                        pic_serial.push({"serial":pic_list[i].serial, "link": firstlink});
+                    }
+
+                    // use Map() to merge two data
+                    // create a new Map(), which is lookup table for pic_data
+                    // ① Turn `b` into a lookup table: serial -> object 
+                    // 2 -> { serial: 2, pic: "b.jpg" } 
+                    // 3 -> { serial: 3, pic: "c.jpg" }
+                    const pic_Map = new Map(pic_serial.map(o => [String(o.serial), o]));
+
+                    // filter text_serial by pic_serial -> remain serial exsist in both data
+                    // ② First use filter to remove items in `a` that don’t have a matching serial in `b`.
+                    //    pic_Map.has(o.id) means `b` also contains this serial.
+                    //    Example: `a` has  1/2/3, but `b` only has 2/3/4, so serial=1 will be dropped.
+                    const text_serial_filted = text_serial.filter(o => pic_Map.has(String(o.serial)));
+                    // merge data together
+                    // ③ Then use map to merge the corresponding objects from `a` and `b` into a new object.
+                    //    `{...o, ...rMap.get(o.id)}` is called a “spread merge.”
+                    //    Fields from `a` (serial, name) go first, then fields from `b` (pic).
+                    const merge = text_serial_filted.map(o =>({...o, ...pic_Map.get(String(o.serial))}));
+                    render(merge);
+
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+            init();
         </script>
     </body>
 
