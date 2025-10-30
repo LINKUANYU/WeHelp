@@ -2,6 +2,7 @@ import urllib.request as request
 import json
 from copy import deepcopy
 from operator import itemgetter
+import csv
 
 # get data from url and sorted by id
 src1 = "https://resources-wehelp-taiwan-b986132eca78c0b5eeb736fc03240c2ff8b7116.gitlab.io/hotels-ch"
@@ -19,13 +20,11 @@ en_list = en_data["list"]
 en_list_sorted = sorted(en_list, key = itemgetter("_id"))
 
 # combine two list and write into csv file
-with open("hotels.csv", "w", encoding ="utf-8") as file:
+with open("hotels.csv", "w", encoding ="utf-8", newline = "") as file:
+    w = csv.writer(file)
     for ch, en in zip(ch_list_sorted, en_list_sorted):
-        file.write(
-            f'{ch["旅宿名稱"]},{en["hotel name"]}'
-            f'{ch["地址"]},{en["address"]}'
-            f'{en["tel"]},{en["the total number of rooms"]}\n'
-        )
+        w.writerow([ch["旅宿名稱"], en["hotel name"], ch["地址"], en["address"], en["tel"], en["the total number of rooms"]])
+
 
 # turn the address into the district only 
 for d in ch_list_sorted:
@@ -49,7 +48,8 @@ for d in ch_list_sorted:
     if found:
         continue
     area.append({"name": (d["地址"]), "count": 1, "rooms": int(d["房間數"])})
-
-with open("district.csv", "w", encoding="utf-8") as file:
+    
+with open("district.csv", "w", encoding="utf-8", newline = "") as file:
+    w = csv.writer(file)
     for d in area:
-        file.write(f'{d["name"]},{d["count"]},{d["rooms"]}\n')
+        w.writerow([d["name"],d["count"],d["rooms"]])
