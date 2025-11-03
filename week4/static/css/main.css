@@ -20,7 +20,6 @@ input{
     height: 30px;
 }
 button{
-    margin-top: 15px;
     font-size: 1.2rem;
 }
 .flex{
@@ -30,12 +29,6 @@ button{
     font-size: 1.5rem;
     flex-wrap: wrap;
     margin: 10px;
-}
-.flex .flex-break{
-    flex-basis: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .flex.title{

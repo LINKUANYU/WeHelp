@@ -3,33 +3,46 @@
 {% block body %}
 <header>歡迎光臨，請輸入信箱密碼</header>
 <div class="card">
-    <div class="flex title">
-        登入系統
-    </div>
-    <div class="flex">
-        <span>信箱</span>
-        <input type="text" name="email">
-    </div>
-    <div class="flex">
-        <span>密碼</span>
-        <input type="text" name="email">
-    </div>
-    <form class="flex">
-        <label class="flex-break">同意條款
-            <input type="checkbox" id="agree" name="agree" required>
+    <div class="flex title">登入系統</div>
+    <form action="/login" method="post">
+        <div class="flex">
+            <span>信箱</span>
+            <input type="text" name="email">
+        </div>
+        <div class="flex">
+            <span>密碼</span>
+            <input type="text" name="password">
+        </div>
+        <label class="flex">同意條款
+            <input type="checkbox" id="agree" name="agree">
         </label>
-        <button>登入</button>
+        <div class="flex">
+            <button class="login-btn">登入</button>
+        </div>
     </form>
 </div>
 <div class="card">
     <div class="flex title">取得旅館資訊</div>
-    <form class="flex">
-        <div class="flex-break">
+    <form>
+        <div class="flex">
             <span>編號</span>
             <input type="text" name="id-hotel">
         </div>
-        <button>取得</button>
+        <div class="flex">
+            <button>取得</button>
+        </div>
     </form>
 </div>
+<script>
+    const login_btn = document.querySelector('.login-btn');
+    const checkbox = document.querySelector('#agree');
+    login_btn.addEventListener('click', function(e){
+        if (!checkbox.checked){
+            alert("請勾選同意條款");
+            e.preventDefault();
+        }
+    });
+
+</script>
 
 {% endblock %}
