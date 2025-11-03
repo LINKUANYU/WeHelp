@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<header>歡迎光臨，請輸入信箱密碼</header>
+<div class="card">
+    <div class="flex title">
+        登入系統
+    </div>
+    <div class="flex">
+        <span>信箱</span>
+        <input type="text" name="email">
+    </div>
+    <div class="flex">
+        <span>密碼</span>
+        <input type="text" name="email">
+    </div>
+    <form class="flex">
+        <label class="flex-break">同意條款
+            <input type="checkbox" id="agree" name="agree" required>
+        </label>
+        <button>登入</button>
+    </form>
+</div>
+<div class="card">
+    <div class="flex title">取得旅館資訊</div>
+    <form class="flex">
+        <div class="flex-break">
+            <span>編號</span>
+            <input type="text" name="id-hotel">
+        </div>
+        <button>取得</button>
+    </form>
+</div>
+
+{% endblock %}
