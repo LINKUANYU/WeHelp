@@ -17,24 +17,22 @@
             <input type="checkbox" id="agree" name="agree">
         </label>
         <div class="flex">
-            <button class="login-btn">登入</button>
+            <button id="login-btn">登入</button>
         </div>
     </form>
 </div>
 <div class="card">
     <div class="flex title">取得旅館資訊</div>
-    <form>
-        <div class="flex">
-            <span>編號</span>
-            <input type="text" name="id-hotel">
-        </div>
-        <div class="flex">
-            <button>取得</button>
-        </div>
-    </form>
+    <div class="flex">
+        <span>編號</span>
+        <input type="text" id="id-hotel">
+    </div>
+    <div class="flex">
+        <button onclick="submit()">取得</button>
+    </div>
 </div>
 <script>
-    const login_btn = document.querySelector('.login-btn');
+    const login_btn = document.querySelector('#login-btn');
     const checkbox = document.querySelector('#agree');
     login_btn.addEventListener('click', function(e){
         if (!checkbox.checked){
@@ -42,6 +40,22 @@
             e.preventDefault();
         }
     });
+    
+    function submit(){
+        const id_raw = document.querySelector('#id-hotel').value.trim();
+        const id = Number(id_raw);
+        if (!Number.isInteger(id) || id <= 0){
+            alert("請輸入正整數");
+            return
+        };
+        
+        window.location = `/hotel/${id}`;
+    }
+    
+
+
+
+
 
 </script>
 
