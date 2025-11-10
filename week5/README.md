@@ -105,6 +105,7 @@ Create table
 );`
 
 Insert arbitrary data
+
 `
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'This is good!', FLOOR(RAND() * 10));
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'NICE!!!', FLOOR(RAND() * 10));
