@@ -1,48 +1,63 @@
-# Task 2
-CREATE TABLE member(
+# Week 5 assignment 
+
+## Task 2
+1. Create a new database named website.
+`CREATE DATABASE website;`
+2. Create a new table named member, in the website database, designed as below:
+`CREATE TABLE member(
   id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   follower_count INT NOT NULL DEFAULT 0,
   time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+);`
 
 ![task](task2.png)
 
 
-# Task 3
+## Task 3
+1. INSERT a new row to the member table where name, email and password must beset to test, test@test.com, and test. INSERT additional 4 rows with arbitrary data.
+`
 INSERT INTO member (name, email, password) VALUES ('test', 'test@test.com', 'test');
 INSERT INTO member (name, email, password) VALUES ('monday', 'monday@test.com', 'monday');
 INSERT INTO member (name, email, password) VALUES ('tuesday', 'tuesday@test.com', 'tuesday');
 INSERT INTO member (name, email, password) VALUES ('wednesday', 'wednesday@test.com', 'wednesday');
 INSERT INTO member (name, email, password) VALUES ('thursday', 'thursday@test.com', 'thursday');
+`
 ![task](task3/task3-1.png)
-SELECT * FROM member;
+2. SELECT all rows from the member table.
+`SELECT * FROM member;`
 ![task](task3/task3-2.png)
-SELECT * FROM member ORDER BY time DESC;
+3. SELECT all rows from the member table, in descending order of time.
+`SELECT * FROM member ORDER BY time DESC;`
 ![task](task3/task3-3.png)
-SELECT * FROM member ORDER BY time DESC LIMIT 3 OFFSET 1;
+4. SELECT total 3 rows, second to fourth, from the member table, in descending order of time. Note: it does not mean SELECT rows where id are 2, 3, or 4.
+`SELECT * FROM member ORDER BY time DESC LIMIT 3 OFFSET 1;`
 ![task](task3/task3-4.png)
-SELECT * FROM member WHERE email = 'test@test.com';
+5. SELECT rows where email equals to test@test.com.
+`SELECT * FROM member WHERE email = 'test@test.com';`
 ![task](task3/task3-5.png)
-SELECT * FROM member WHERE name LIKE '%es%';
+6. SELECT rows where name includes the es keyword.
+`SELECT * FROM member WHERE name LIKE '%es%';`
 ![task](task3/task3-6.png)
-SELECT * FROM member WHERE email = 'test@test.com' AND password = 'test';
+7. SELECT rows where email equals to test@test.com and password equals to test.
+`SELECT * FROM member WHERE email = 'test@test.com' AND password = 'test';`
 ![task](task3/task3-7.png)
-UPDATE member SET name = 'test2' WHERE email = 'test@test.com';
+8. UPDATE data in name column to test2 where email equals to test@test.com.
+`UPDATE member SET name = 'test2' WHERE email = 'test@test.com';`
 ![task](task3/task3-8.png)
 
 # Task 4
-SELECT COUNT(*) FROM member;
+`SELECT COUNT(*) FROM member;`
 ![task](task4/task4-1.png)
-UPDATE member SET follower_count = FLOOR(RAND() * 100) WHERE id BETWEEN 1 AND 5;
+`UPDATE member SET follower_count = FLOOR(RAND() * 100) WHERE id BETWEEN 1 AND 5;`
 
-SELECT SUM(follower_count) FROM member;
+`SELECT SUM(follower_count) FROM member;`
 ![task](task4/task4-2.png)
-SELECT AVG(follower_count) FROM member;
+`SELECT AVG(follower_count) FROM member;`
 ![task](task4/task4-3.png)
-SELECT AVG(follower_count) AS avg_follower_count FROM (SELECT follower_count FROM member ORDER BY follower_count DESC LIMIT 2) AS top2;
+`SELECT AVG(follower_count) AS avg_follower_count FROM (SELECT follower_count FROM member ORDER BY follower_count DESC LIMIT 2) AS top2;`
 ![task](task4/task4-4.png)
 
 # Task 5
