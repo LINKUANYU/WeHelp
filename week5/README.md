@@ -20,6 +20,7 @@
 
 ## Task 3
 1. INSERT a new row to the member table where name, email and password must beset to test, test@test.com, and test. INSERT additional 4 rows with arbitrary data.
+
 `
 INSERT INTO member (name, email, password) VALUES ('test', 'test@test.com', 'test');
 
@@ -69,27 +70,42 @@ INSERT INTO member (name, email, password) VALUES ('thursday', 'thursday@test.co
 ![task](task3/task3-8.png)
 
 # Task 4
+1. SELECT how many rows from the member table.
+
 `SELECT COUNT(*) FROM member;`
 ![task](task4/task4-1.png)
+
+2. SELECT the sum of follower_count of all the rows from the member table.
 `UPDATE member SET follower_count = FLOOR(RAND() * 100) WHERE id BETWEEN 1 AND 5;`
 
 `SELECT SUM(follower_count) FROM member;`
 ![task](task4/task4-2.png)
+
+3. SELECT the average of follower_count of all the rows from the member table.
+
 `SELECT AVG(follower_count) FROM member;`
 ![task](task4/task4-3.png)
+
+4. SELECT the average of follower_count of the first 2 rows, in descending order of
+follower_count, from the member table.
+
 `SELECT AVG(follower_count) AS avg_follower_count FROM (SELECT follower_count FROM member ORDER BY follower_count DESC LIMIT 2) AS top2;`
 ![task](task4/task4-4.png)
 
 # Task 5
-CREATE TABLE message(
+Create table 
+
+`CREATE TABLE message(
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     member_id INT UNSIGNED NOT NULL,
     content TEXT NOT NULL,
     like_count INT NOT NULL DEFAULT 0,
     time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (member_id) REFERENCES member (id)
-);
+);`
 
+Insert arbitrary data
+`
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'This is good!', FLOOR(RAND() * 10));
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'NICE!!!', FLOOR(RAND() * 10));
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'GOOD!!!', FLOOR(RAND() * 10));
@@ -105,13 +121,24 @@ INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'Excellent!', FLOOR(RAND() * 10));
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, "Let's do it!", FLOOR(RAND() * 10));
 INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'THE GOAT', FLOOR(RAND() * 10));
+`
 
+1. SELECT all messages, including sender names. We have to JOIN the member table to get that.
 
-SELECT * FROM message JOIN member ON message.member_id = member.id;
+`SELECT * FROM message JOIN member ON message.member_id = member.id;`
 ![task](task5/task5-1.png)
-SELECT * FROM message JOIN member ON message.member_id = member.id WHERE member.email = 'test@test.com';
+
+2. SELECT all messages, including sender names, where sender email equals to test@test.com. We have to JOIN the member table to filter and get that.
+
+`SELECT * FROM message JOIN member ON message.member_id = member.id WHERE member.email = 'test@test.com';`
 ![task](task5/task5-2.png)
-SELECT AVG(like_count) FROM message JOIN member ON message.member_id = member.id WHERE member.email = 'test@test.com';
+
+3. Use SELECT, SQL Aggregation Functions with JOIN statement, get the average like count of messages where sender email equals to test@test.com.
+
+`SELECT AVG(like_count) FROM message JOIN member ON message.member_id = member.id WHERE member.email = 'test@test.com';`
 ![task](task5/task5-3.png)
-SELECT AVG(like_count), email FROM message JOIN member ON message.member_id = member.id GROUP BY email;
+
+Use SELECT, SQL Aggregation Functions with JOIN statement, get the average like count of messages GROUP BY sender email.
+
+`SELECT AVG(like_count), email FROM message JOIN member ON message.member_id = member.id GROUP BY email;`
 ![task](task5/task5-4.png)
