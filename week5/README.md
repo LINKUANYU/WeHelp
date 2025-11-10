@@ -95,7 +95,7 @@ follower_count, from the member table.
 ![task](task4/task4-4.png)
 
 # Task 5
-Create table 
+### Create table 
 
 `CREATE TABLE message(
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -106,7 +106,7 @@ Create table
     FOREIGN KEY (member_id) REFERENCES member (id)
 );`
 
-Insert arbitrary data
+### Insert arbitrary data
 
 
 `INSERT INTO message(member_id, content, like_count) VALUES (FLOOR(RAND() * 5) + 1, 'This is good!', FLOOR(RAND() * 10));`
