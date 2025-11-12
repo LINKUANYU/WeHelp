@@ -78,7 +78,7 @@
 
 2. SELECT the sum of follower_count of all the rows from the member table.
 
-`UPDATE member SET follower_count = FLOOR(RAND() * 100) WHERE id BETWEEN 1 AND 5;`
+`UPDATE member SET follower_count = FLOOR(RAND() * 100);`
 
 `SELECT SUM(follower_count) FROM member;`
 ![task](task4/task4-2.png)
