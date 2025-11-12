@@ -21,7 +21,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'b8b55b04-b5fd-11f0-a3b6-da96632bafeb:1-195';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'b8b55b04-b5fd-11f0-a3b6-da96632bafeb:1-199';
 
 --
 -- Table structure for table `member`
@@ -47,7 +47,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'test2','test@test.com','test',94,'2025-11-10 14:57:03'),(2,'monday','monday@test.com','monday',78,'2025-11-10 14:57:10'),(3,'tuesday','tuesday@test.com','tuesday',8,'2025-11-10 14:57:18'),(4,'wednesday','wednesday@test.com','wednesday',5,'2025-11-10 14:57:21'),(5,'thursday','thursday@test.com','thursday',4,'2025-11-10 14:57:25');
+INSERT INTO `member` VALUES (1,'test2','test@test.com','test',74,'2025-11-10 14:57:03'),(2,'monday','monday@test.com','monday',3,'2025-11-10 14:57:10'),(3,'tuesday','tuesday@test.com','tuesday',91,'2025-11-10 14:57:18'),(4,'wednesday','wednesday@test.com','wednesday',48,'2025-11-10 14:57:21'),(5,'thursday','thursday@test.com','thursday',66,'2025-11-10 14:57:25');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,4 +90,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-11  9:22:00
+-- Dump completed on 2025-11-12 10:21:51
