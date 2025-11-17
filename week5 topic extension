@@ -1,0 +1,64 @@
+1. 請說明 Primary Key 的主要概念和實際的作用？
+主要概念：
+Primary Key 的概念是在一個table中是「唯一UNIQUE」和「NOT NULL」，primary key欄位必定要有值不能有兩個列有相同的value。
+
+實際作用：
+- 唯一識別一列：通常會使用id=數字來當作primary key，查找時使用id會精準找到要的那一筆資料，如果使用name來查找就有可能會出現多筆資料。
+- 加速尋找：資料庫如mysql innoDB 會自動將primary key 變成index，查這一欄速度會很快。
+- 當其他Table的外鍵：用來表達兩個Table之間的關聯。
+- 避免重複資料保持唯一性：插入相同資料會跳Error。
+
+2. 請說明 Foreign Key 的主要概念和實際的作用？
+主要概念：
+- 外鍵不一定是唯一，可以有很多
+- 外鍵欄位的值，通常要出現在「被參照」的表中，通常是參照primary key或UNIQUE，如果找不到會報錯
+- 用來表達Table之間的關聯性
+實際作用：
+- 防止「孤兒資料」，子表指向父表中不存在的資料會報錯
+- 讓刪除/更新父資料時，可以選擇自動同步子資料
+- 幫助你用 JOIN 寫出合理的關聯查詢。
+
+3. 如何使用 index 索引加速 SELECT * FROM table_name WHERE column_1='test' and column_2='test'; 這樣的查詢語句？
+建立複合索引 CREATE INDEX idx_table_c1_c2 ON table_name(column_1, column_2);
+
+4. 承上，如何可以觀察到索引的加速效果？
+可以透過在查詢語句前面加上 EXPLAIN，確認使用的查詢語句是否有使用 INDEX 加速
+可以觀察分析中的 Key 欄位部分，使用到的索引名稱（若使用到，就代表加速成功），如果沒有使用到任何索引值會是 NULL
+key_len：顯示查詢使用的索引長度（越少越好）
+rows：預估要掃描的行數（越少越好）
+
+5. 承上，索引加速的原理是什麼？請用自己的話回答。
+就我理解，建立索引像是把你要的欄位和Primary Key先做成一個B-tree存起來，要找東西時先去B-tree找，
+找到後把拿到的PK再回去原本的Table直接找到對應PK的資料，最後show整列的結果。
+
+6. 基於第五週的資料表設計，如果我們要進一步支援回覆留言的功能。你會怎麼設計新的、或修改舊的資料表來支援以某個留言 ID 篩選該留言所有回覆的 SQL 語句？請設計你的資料表，並提出對應能滿足需求的 SQL 語句。
+我會修改message的schmea，新增一個Foreign key指向自己message primary key做為留言的下一層留言結構。
+parent_id  INT UNSIGNED DEFAULT NULL, 
+FOREIGN KEY (parent_id) REFERENCES message (id) 
+ON DELETE CASCADE ON UPDATE CASCADE
+ 
+搜尋該留言的所有回覆 SELECT content FROM message WHERE parent_id = "指定留言ID";
+
+CREATE TABLE message (
+  id         INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  member_id  INT UNSIGNED NOT NULL,
+  parent_id  INT UNSIGNED DEFAULT NULL,  
+  content    TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  like_count INT UNSIGNED NOT NULL DEFAULT 0,
+  time       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  KEY idx_member_id (member_id),
+  KEY idx_parent_time (parent_id, time),
+  
+  CONSTRAINT fk_message_member
+    FOREIGN KEY (member_id) REFERENCES member (id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+
+  CONSTRAINT fk_message_parent
+    FOREIGN KEY (parent_id) REFERENCES message (id) 
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
+SELECT content FROM message WHERE parent_id = "指定留言ID";
