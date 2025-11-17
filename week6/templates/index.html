@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<header>歡迎光臨，請註冊登入</header>
+<form class="main">
+    <h3 class="flex">註冊帳號</h3>
+    <div class="flex">
+        <span>姓名</span>
+        <input name="name">
+    </div>
+    <div class="flex">
+        <span>信箱</span>
+        <input name="email">
+    </div>
+    <div class="flex">
+        <span>密碼</span>
+        <input name="pw">
+    </div>
+    <div class="flex">
+        <button onclick="signup()">註冊</button>
+    </div>
+</form>
+<form class="main">
+    <h3 class="flex">登入系統</h3>
+    <div class="flex">
+        <span>信箱</span>
+        <input name="email">
+    </div>
+    <div class="flex">
+        <span>密碼</span>
+        <input name="pw">
+    </div>
+    <div class="flex">
+        <button onclick="login()">登入</button>
+    </div>
+</form>
+
+
+
+{% endblock %}

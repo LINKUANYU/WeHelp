@@ -1,0 +1,8 @@
+# Python venv
+.venv/
+
+# dotenv
+.env
+
+__pycache__/
+.DS_Store
