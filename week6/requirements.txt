@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 jinja2
 mysql-connector-python
+python-multipart
+itsdangerous

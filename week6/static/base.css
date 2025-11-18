@@ -6,6 +6,9 @@ header{
     color: white;
     display: flex; justify-content: center; align-items: center;
 }
-
-.main{border: 1px solid;}
-.flex{display: flex; justify-content: center; margin: 10px;}
+h2{text-align: center;}
+input{margin-left: 10px;}
+.mb{margin-bottom: 10px;}
+.main{border: 1px solid; padding: 10px;}
+.flex{display: flex; justify-content: center;}
+.list{text-align: center;}
