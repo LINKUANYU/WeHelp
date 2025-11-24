@@ -1,0 +1,14 @@
+body{margin: 0;}
+header{
+    height: 100px;
+    background-color: rgba(26, 45, 56, 1);
+    font-size: 3rem; font-weight: bold;
+    color: white;
+    display: flex; justify-content: center; align-items: center;
+}
+h2{text-align: center;}
+input{margin-left: 10px;}
+.mb{margin-bottom: 10px;}
+.main{border: 1px solid; padding: 10px;}
+.flex{display: flex; justify-content: center;}
+.list{text-align: center;}

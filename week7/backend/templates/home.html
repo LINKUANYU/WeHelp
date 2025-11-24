@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<header>歡迎光臨，請註冊登入</header>
+<form class="main" id="signup_form">
+    <h2 class="flex">註冊帳號</h2>
+    <div class="flex mb">
+        <span>姓名</span>
+        <input id="name_signup">
+    </div>
+    <div class="flex mb">
+        <span>信箱</span>
+        <input id="email_signup">
+    </div>
+    <div class="flex mb">
+        <span>密碼</span>
+        <input id="pw_signup">
+    </div>
+    <div class="flex mb">
+        <button type="submit">註冊</button>
+    </div>
+</form>
+<!-- 下面還沒改fetch -->
+<form class="main" id="login_form" action="/api/login" method="post">
+    <h2 class="flex">登入系統</h2>
+    <div class="flex mb">
+        <span>信箱</span>
+        <input name="email" id="email_login">
+    </div>
+    <div class="flex mb">
+        <span>密碼</span>
+        <input name="pw" id="pw_login">
+    </div>
+    <div class="flex mb">
+        <button type="submit">登入</button>
+    </div>
+</form>
+<script src="/frontend/js/home.js"></script>
+
+{% endblock %}

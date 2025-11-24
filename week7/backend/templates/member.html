@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<header>歡迎光臨，這是會員頁</header>
+<div class="main">
+    <h2>{{ name }}，歡迎登入系統</h2>
+    <div class="flex">
+        <a href="/logout">登出系統</a>
+    </div>
+</div>
+<script src="/frontend/js/member.js"></script>
+
+{% endblock %}
