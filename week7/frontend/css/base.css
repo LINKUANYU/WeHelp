@@ -7,8 +7,7 @@ header{
     display: flex; justify-content: center; align-items: center;
 }
 h2{text-align: center;}
-input{margin-left: 10px;}
+input{margin-left: 10px; margin-right: 10px;}
 .mb{margin-bottom: 10px;}
 .main{border: 1px solid; padding: 10px;}
 .flex{display: flex; justify-content: center;}
-.list{text-align: center;}

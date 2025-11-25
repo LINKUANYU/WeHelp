@@ -1,22 +1,80 @@
-from fastapi import APIRouter, Request
-from ..schemas import signUp
+from fastapi import APIRouter, Depends, HTTPException, Request
+from mysql.connector import Error, IntegrityError, errorcode
+from ..schemas import signUpIn, loginIn
+from ..deps import get_conn, get_cur
 
+
+
+# HTTPException
+# 用途：當發生業務錯誤或權限不足等情況，需要回 400/401/403/404/409/... 這類錯誤碼時使用。
+# 會發生什麼：丟出後，FastAPI 不再執行後續程式碼或路由處理器，直接組出錯誤 JSON。
+# 回傳格式（預設）：{"detail": <你給的 detail>}
 
 router = APIRouter(prefix="/api")
 
 # signup
 @router.post("/signup")
-def signup(payload: signUp):
-    email = payload.email.strip()
+def signup(payload: signUpIn, conn = Depends(get_conn)):
+    
+    email = payload.email.strip().lower()
     name = payload.name.strip()
-    pw = payload.pw.strip()
+    pw = payload.pw
     if not email or not name or not pw:
-        return {"msg": "請輸入完整資訊"}
+        raise HTTPException(status_code=400, detail="請輸入完整資訊")
+    
     # sql 
+    cur = conn.cursor()
+    try:
+        cur.execute("INSERT INTO member(email, name, password) VALUES (%s, %s, %s)",(email, name, pw))
+        conn.commit()
+        return {"msg": "註冊成功，請重新登入"}
+    
+    except IntegrityError as e:                       # 只攔「資料完整性」錯誤（例如 UNIQUE/FK）
+        conn.rollback()                               # 這次交易全部撤回，避免半套資料/鎖卡住
+        if e.errno == errorcode.ER_DUP_ENTRY:         # 判斷是否為「重複鍵」(MySQL 1062)
+            raise HTTPException(status_code=400, detail="已存在email")  # 回給前端 400＋友善訊息
 
-
-    print(email)
-    return {"ok": "註冊成功"}
+    except Error:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail="資料庫錯誤，稍後再試")
+    
+    finally:
+        cur.close()
 
 # login
+@router.post("/login")
+def login(request: Request, payload: loginIn, cur = Depends(get_cur)):
+    email = payload.email.strip()
+    pw = payload.pw
+    if not email or not pw:
+        raise HTTPException(status_code=400, detail="請輸入完整資訊")
+    
+    cur.execute("SELECT id, name, email, password FROM member WHERE email = %s", (email,))
+    data = cur.fetchone()
+    if not data:
+        raise HTTPException(status_code=400, detail="帳號或密碼輸入錯誤")
+    if data["password"] != pw:
+        raise HTTPException(status_code=400, detail="帳號或密碼輸入錯誤")
+
+    request.session["user_id"] = data["id"]
+    return {"id": data["id"], "name": data["name"], "id": data["email"]}
+
+@router.get("/member")
+def member(request: Request, cur = Depends(get_cur)):
+    
+    user_id = request.session.get('user_id')
+    if not user_id:
+        raise HTTPException(status_code=401, detail="請先登入")
+    
+    cur.execute("SELECT id, name, email FROM member WHERE id = %s", (user_id,))
+    user = cur.fetchone()
+    if not user:
+        raise HTTPException(status_code=404, detail="找不到會員資料")
+
+    return {"id": user["id"], "name": user["name"], "id": user["email"]}
+
+    
+        
+        
+
 

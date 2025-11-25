@@ -5,13 +5,24 @@ from .path import FRONT_DIR
 import mysql.connector
 from mysql.connector import Error
 from .deps import DB_CONFIG
+from dotenv import load_dotenv
+from starlette.middleware.sessions import SessionMiddleware
+import os
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 app = FastAPI()
+
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.include_router(page.router)
 app.include_router(member.router)
 
 app.mount("/frontend", StaticFiles(directory=FRONT_DIR))
+
+
 
 
 @app.on_event("startup")
@@ -32,3 +43,5 @@ def db_connect_test():
                 conn.close()
         except NameError:
             pass
+
+

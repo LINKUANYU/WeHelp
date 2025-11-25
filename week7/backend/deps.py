@@ -4,7 +4,7 @@ import mysql.connector
 from fastapi import Depends
 from typing import Generator
 
-# 讀取環境變數
+# 讀環境變數
 load_dotenv()
 # DB環境變數
 DB_CONFIG = {
@@ -24,7 +24,7 @@ def get_conn() -> Generator:
         conn.close()
 
 def get_cur(conn = Depends(get_conn)) -> Generator:
-    cur = conn.cursor()
+    cur = conn.cursor(dictionary=True)
     try:
         yield cur
     finally:

@@ -2,3 +2,7 @@ fastapi
 uvicorn[standard]
 jinja2
 mysql-connector-python
+# 讀取環境變數
+python-dotenv
+# session 
+itsdangerous

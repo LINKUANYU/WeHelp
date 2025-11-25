@@ -1,14 +1,35 @@
 {% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}Member{% endblock %}
 
 {% block body %}
 <header>歡迎光臨，這是會員頁</header>
 <div class="main">
-    <h2>{{ name }}，歡迎登入系統</h2>
+    <h2 id="welcome-msg"></h2>
     <div class="flex">
         <a href="/logout">登出系統</a>
     </div>
 </div>
+<form class="main">
+    <h2>查詢會員姓名</h2>
+    <div class="flex mb">
+        <input id="serach">
+        <button>查詢</button>
+    </div>
+</form>
+<form class="main">
+    <h2>更新我的姓名</h2>
+    <div class="flex mb">
+        <input id="rename">
+        <button>更新</button>
+    </div>
+</form>
+<form class="main">
+    <h2>誰查詢了我</h2>
+    <div class="flex mb">
+        <button>更新</button>
+    </div>
+</form>
+
 <script src="/frontend/js/member.js"></script>
 
 {% endblock %}
