@@ -55,6 +55,10 @@ search_form.addEventListener('submit', async function(e){
         alert("請輸入正整數ID");
         return;
     }
+    if (!search_id){
+        alert("請輸入資料");
+        return;
+    }
 
     try{
         const res = await fetchData(`/api/member/${search_id}`);
@@ -93,3 +97,51 @@ search_form.addEventListener('submit', async function(e){
 
 });
 
+// 修改會員姓名
+rename_form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const rename_input = rename_form.querySelector('#rename-input').value.trim();
+    if (!rename_input){
+        alert("請輸入資料"); 
+        return;
+    }
+    try{
+        const result = await fetchData("/api/member", {
+            method: "PATCH",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({"new_name": rename_input})
+        });
+        
+        let rename_result = rename_form.querySelector('.rename-result');
+        if (!rename_result){
+            rename_result = document.createElement('div');
+            rename_result.className = "flex mb rename-result";
+        }
+
+        if (result.ok === true){
+            rename_result.textContent = "更新成功";
+        } else {
+            rename_result.textContent = "更新失敗";
+        }
+        rename_form.append(rename_result);
+    } catch (e){
+        if (e.status === 401){
+            const err_msg = e?.payload?.detail || "請先登入";
+            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
+            return;
+        }
+        if (e.status === 404){
+            const err_msg = e?.payload?.detail || "會員不存在";
+            alert(err_msg);
+            return;
+        }
+        const err_msg = 
+            e?.payload?.detail ||
+            (typeof e?.payload === 'string' ? e.payload : '') ||
+            e?.message || "發生錯誤，稍後再試";
+        alert(err_msg);
+    }
+    
+    
+    
+})

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from mysql.connector import Error, IntegrityError, errorcode
-from ..schemas import signUpIn, loginIn
+from ..schemas import signUpIn, loginIn, renameIn
 from ..deps import get_conn, get_cur, get_current_user
 
 
@@ -60,13 +60,14 @@ def login(request: Request, payload: loginIn, cur = Depends(get_cur)):
     return {"id": data["id"], "name": data["name"], "id": data["email"]}
 
 @router.get("/member")
-def member(request: Request, cur = Depends(get_cur), current_user = Depends(get_current_user)):
+def member(current_user = Depends(get_current_user)):
     return {"id": current_user["id"], "name": current_user["name"], "id": current_user["email"]}
 
 @router.get("/member/{search_id}")
 def member_search_id(
-    request: Request, search_id: int,
-    cur = Depends(get_cur), current_user = Depends(get_current_user)
+    search_id: int,
+    cur = Depends(get_cur), 
+    current_user = Depends(get_current_user)
     ):    
     
     cur.execute("SELECT id, name, email FROM member WHERE id = %s", (search_id,))
@@ -74,7 +75,21 @@ def member_search_id(
     if not data:
         return {"data": "null"}
     return {"data":{"id": data["id"], "name": data["name"], "email": data["email"]}}
-    
+
+@router.patch("/member")
+def rename(
+    payload: renameIn,
+    conn = Depends(get_conn),
+    current_user = Depends(get_current_user)
+    ):
+    user_id = current_user["id"]
+    new_name = payload.new_name.strip()
+    if not new_name:
+        return {"error": True}
+    cur = conn.cursor(dictionary=True)
+    cur.execute("UPDATE member SET name = %s WHERE id = %s", (new_name, user_id))
+    conn.commit()
+    return {"ok": True}
     
         
         

@@ -13,3 +13,6 @@ class userOut(BaseModel):
     id: int
     name: str
     email: str
+
+class renameIn(BaseModel):
+    new_name: str
