@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 import mysql.connector
-from fastapi import Depends
+from fastapi import Depends, Request, HTTPException
 from typing import Generator
 
 # 讀環境變數
@@ -29,3 +29,14 @@ def get_cur(conn = Depends(get_conn)) -> Generator:
         yield cur
     finally:
         cur.close()
+
+def get_current_user(request: Request, cur = Depends(get_cur)):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="請先登入")
+    
+    cur.execute("SELECT id, name, email FROM member WHERE id = %s", (user_id,))
+    user = cur.fetchone()
+    if not user:
+        raise HTTPException(status_code=401, detail="查無此人")
+    return user

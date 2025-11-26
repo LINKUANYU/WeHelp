@@ -14,7 +14,7 @@ def home(request: Request):
 
 @router.get("/member")
 def member(request: Request):
-    if not request.session["user_id"]:
+    if not request.session.get("user_id"):
         return RedirectResponse("/?msg=請先登入", status_code=303)
     return templates.TemplateResponse("member.html",{"request": request})
 

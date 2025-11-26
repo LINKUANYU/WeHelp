@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from mysql.connector import Error, IntegrityError, errorcode
 from ..schemas import signUpIn, loginIn
-from ..deps import get_conn, get_cur
+from ..deps import get_conn, get_cur, get_current_user
 
 
 
@@ -73,6 +73,19 @@ def member(request: Request, cur = Depends(get_cur)):
 
     return {"id": user["id"], "name": user["name"], "id": user["email"]}
 
+@router.get("/member/{search_id}")
+def member_search_id(
+    request: Request, search_id: int,
+    cur = Depends(get_cur), current_user = Depends(get_current_user)
+    ):    
+    
+    # sql
+    cur.execute("SELECT id, name, email FROM member WHERE id = %s", (search_id,))
+    data = cur.fetchone()
+    if not data:
+        return {"data": "null"}
+    return {"data":{"id": data["id"], "name": data["name"], "email": data["email"]}}
+    
     
         
         
