@@ -17,21 +17,33 @@ async function fetchData(url, options) {
     }
     return body
 }
-
+// 取得會員資訊
 (async function(){
     try{
         const result = await fetchData("/api/member");
         const name = result.name;
         welcome_msg.textContent = `${name}，歡迎登入系統`;
     } catch (e){
-        const err_msg = e?.payload?.detail ||
-        (typeof e?.payload === 'string' ? e.payload : '') ||
-        e?.message || "發生錯誤，稍後再試";
+        if (e.status === 401){
+            const err_msg = e?.payload?.detail || "請先登入";
+            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
+            return;
+        }
+        if (e.status === 404){
+            const err_msg = e?.payload?.detail || "會員不存在";
+            alert(err_msg);
+            return;
+        }
+        const err_msg = 
+            e?.payload?.detail ||
+            (typeof e?.payload === 'string' ? e.payload : '') ||
+            e?.message || "發生錯誤，稍後再試";
         alert(err_msg);
     }
 
 })();
 
+// 查詢會員姓名
 search_form.addEventListener('submit', async function(e){
     e.preventDefault();
 
@@ -62,13 +74,22 @@ search_form.addEventListener('submit', async function(e){
         search_id_result.textContent = result;
         search_form.append(search_id_result);
     } catch (e){
+        if (e.status === 401){
+            const err_msg = e?.payload?.detail || "請先登入";
+            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
+            return;
+        }
+        if (e.status === 404){
+            const err_msg = e?.payload?.detail || "會員不存在";
+            alert(err_msg);
+            return;
+        }
         const err_msg = 
-        e?.payload?.detail ||
-        (typeof e?.payload === 'string' ? e.payload : '') ||
-        e?.message || "發生錯誤，稍後再試";
+            e?.payload?.detail ||
+            (typeof e?.payload === 'string' ? e.payload : '') ||
+            e?.message || "發生錯誤，稍後再試";
         alert(err_msg);
     }
-    
 
 });
 

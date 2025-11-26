@@ -38,5 +38,5 @@ def get_current_user(request: Request, cur = Depends(get_cur)):
     cur.execute("SELECT id, name, email FROM member WHERE id = %s", (user_id,))
     user = cur.fetchone()
     if not user:
-        raise HTTPException(status_code=404, detail="查無此人")
+        raise HTTPException(status_code=404, detail="會員不存在")
     return user
