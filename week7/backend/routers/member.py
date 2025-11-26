@@ -66,14 +66,22 @@ def member(current_user = Depends(get_current_user)):
 @router.get("/member/{search_id}")
 def member_search_id(
     search_id: int,
-    cur = Depends(get_cur), 
+    conn = Depends(get_conn), 
     current_user = Depends(get_current_user)
     ):    
-    
+    cur = conn.cursor(dictionary=True)
     cur.execute("SELECT id, name, email FROM member WHERE id = %s", (search_id,))
     data = cur.fetchone()
     if not data:
+        cur.close()
         return {"data": "null"}
+    
+    searcher_id = current_user["id"]
+    target_id = search_id
+    cur.execute("INSERT INTO member_search_log(searcher_id, target_id)" \
+    "VALUES(%s, %s)", (searcher_id, target_id))
+    conn.commit()
+    cur.close()
     return {"data":{"id": data["id"], "name": data["name"], "email": data["email"]}}
 
 @router.patch("/member")
@@ -89,7 +97,24 @@ def rename(
     cur = conn.cursor(dictionary=True)
     cur.execute("UPDATE member SET name = %s WHERE id = %s", (new_name, user_id))
     conn.commit()
+    cur.close()
     return {"ok": True}
+
+@router.get("/member/extra/who_search")
+def who_search(cur = Depends(get_cur), current_user = Depends(get_current_user)):
+    user_id = current_user["id"]
+    print(user_id)
+    cur.execute("""
+        SELECT s.searcher_id, s.created_at, m.name
+        FROM member_search_log s JOIN member m ON s.searcher_id = m.id
+        WHERE s.target_id = %s 
+        AND s.searcher_id <> %s
+        ORDER BY s.created_at DESC
+        LIMIT 10
+        """, (user_id, user_id))
+    result = cur.fetchall()
+    return {"data": result}
+
     
         
         

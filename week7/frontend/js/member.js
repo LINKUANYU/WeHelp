@@ -18,7 +18,7 @@ async function fetchData(url, options) {
     return body
 }
 // 取得會員資訊
-(async function(){
+async function stratup(){
     try{
         const result = await fetchData("/api/member");
         const name = result.name;
@@ -41,7 +41,7 @@ async function fetchData(url, options) {
         alert(err_msg);
     }
 
-})();
+};
 
 // 查詢會員姓名
 search_form.addEventListener('submit', async function(e){
@@ -120,6 +120,7 @@ rename_form.addEventListener('submit', async function (e) {
 
         if (result.ok === true){
             rename_result.textContent = "更新成功";
+            stratup();
         } else {
             rename_result.textContent = "更新失敗";
         }
@@ -140,8 +141,40 @@ rename_form.addEventListener('submit', async function (e) {
             (typeof e?.payload === 'string' ? e.payload : '') ||
             e?.message || "發生錯誤，稍後再試";
         alert(err_msg);
+    }  
+});
+
+who_search_form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    try{
+        const result = await fetchData("/api/member/extra/who_search");
+        console.log(result);
+        result.data.forEach((d) => {
+            const timeStr = d.created_at.replace('T', ' ');
+            const box = document.createElement('div');
+            box.className = "flex mb"
+            box.textContent = `${d.name}(${timeStr})`
+            who_search_form.append(box);
+        }); 
+    } catch (e){
+        if (e.status === 401){
+            const err_msg = e?.payload?.detail || "請先登入";
+            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
+            return;
+        }
+        if (e.status === 404){
+            const err_msg = e?.payload?.detail || "會員不存在";
+            alert(err_msg);
+            return;
+        }
+        const err_msg = 
+            e?.payload?.detail ||
+            (typeof e?.payload === 'string' ? e.payload : '') ||
+            e?.message || "發生錯誤，稍後再試";
+        alert(err_msg);
     }
-    
-    
-    
-})
+ 
+});
+
+
+stratup();

@@ -27,4 +27,16 @@ CREATE TABLE IF NOT EXISTS message(
         ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB;
 
-
+-- create table serach
+CREATE TABLE IF NOT EXISTS member_search_log(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    searcher_id INT NOT NULL,
+    target_id INT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_search_searcher
+        FOREIGN KEY (searcher_id) REFERENCES member (id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_search_target
+        FOREIGN KEY (target_id) REFERENCES member (id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB;
