@@ -60,18 +60,8 @@ def login(request: Request, payload: loginIn, cur = Depends(get_cur)):
     return {"id": data["id"], "name": data["name"], "id": data["email"]}
 
 @router.get("/member")
-def member(request: Request, cur = Depends(get_cur)):
-    
-    user_id = request.session.get('user_id')
-    if not user_id:
-        raise HTTPException(status_code=401, detail="請先登入")
-    
-    cur.execute("SELECT id, name, email FROM member WHERE id = %s", (user_id,))
-    user = cur.fetchone()
-    if not user:
-        raise HTTPException(status_code=404, detail="找不到會員資料")
-
-    return {"id": user["id"], "name": user["name"], "id": user["email"]}
+def member(request: Request, cur = Depends(get_cur), current_user = Depends(get_current_user)):
+    return {"id": current_user["id"], "name": current_user["name"], "id": current_user["email"]}
 
 @router.get("/member/{search_id}")
 def member_search_id(
@@ -79,7 +69,6 @@ def member_search_id(
     cur = Depends(get_cur), current_user = Depends(get_current_user)
     ):    
     
-    # sql
     cur.execute("SELECT id, name, email FROM member WHERE id = %s", (search_id,))
     data = cur.fetchone()
     if not data:
