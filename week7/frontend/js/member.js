@@ -2,46 +2,24 @@ const welcome_msg = document.querySelector('#welcome-msg');
 const search_form = document.querySelector('#searchId-form');
 const rename_form = document.querySelector('#rename-form');
 const who_search_form = document.querySelector('#whoSearchMe-form');
+const show_search_id = document.querySelector('#show-search-id');
+const show_rename = document.querySelector('#show-rename');
+const show_who_search = document.querySelector('#show-who-search');
 
 
-async function fetchData(url, options) {
-    const res = await fetch(url, options);
-    const ct = res.headers.get('content-type') || '';
-    const body = ct.includes('application/json') ? await res.json() : await res.text();
-    
-    if (!res.ok){
-        const err = new Error (`HTTP ${res.status}`)
-        err.status = res.status;
-        err.payload = body;
-        throw err
-    }
-    return body
-}
 // 取得會員資訊
-async function stratup(){
+async function startup(){
     try{
         const result = await fetchData("/api/member");
         const name = result.name;
         welcome_msg.textContent = `${name}，歡迎登入系統`;
     } catch (e){
-        if (e.status === 401){
-            const err_msg = e?.payload?.detail || "請先登入";
-            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
-            return;
+        const err_msg = handle_api_error(e);
+        if (err_msg){
+            welcome_msg.textContent = err_msg;
         }
-        if (e.status === 404){
-            const err_msg = e?.payload?.detail || "會員不存在";
-            alert(err_msg);
-            return;
-        }
-        const err_msg = 
-            e?.payload?.detail ||
-            (typeof e?.payload === 'string' ? e.payload : '') ||
-            e?.message || "發生錯誤，稍後再試";
-        alert(err_msg);
     }
-
-};
+}
 
 // 查詢會員姓名
 search_form.addEventListener('submit', async function(e){
@@ -55,52 +33,26 @@ search_form.addEventListener('submit', async function(e){
         alert("請輸入正整數ID");
         return;
     }
-    if (!search_id){
-        alert("請輸入資料");
-        return;
-    }
 
     try{
         const res = await fetchData(`/api/member/${search_id}`);
-        // show result <div>
-        let search_id_result = search_form.querySelector('.search-id-result');
-        if (!search_id_result){
-            search_id_result = document.createElement('div');
-            search_id_result.className = "flex mb search-id-result";
-        }
-        // check result data
-        let result;
         if (res.data === "null"){
-            result = "No Data";
+            show_search_id.textContent = "No Data";
         } else {
-            result = `${res.data.name}(${res.data.email})`;
+            show_search_id.textContent = `${res.data.name}(${res.data.email})`;
         }
-        search_id_result.textContent = result;
-        search_form.append(search_id_result);
     } catch (e){
-        if (e.status === 401){
-            const err_msg = e?.payload?.detail || "請先登入";
-            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
-            return;
+        const err_msg = handle_api_error(e);
+        if (err_msg){
+            show_search_id.textContent = err_msg;
         }
-        if (e.status === 404){
-            const err_msg = e?.payload?.detail || "會員不存在";
-            alert(err_msg);
-            return;
-        }
-        const err_msg = 
-            e?.payload?.detail ||
-            (typeof e?.payload === 'string' ? e.payload : '') ||
-            e?.message || "發生錯誤，稍後再試";
-        alert(err_msg);
     }
-
 });
 
 // 修改會員姓名
 rename_form.addEventListener('submit', async function (e) {
     e.preventDefault();
-    const rename_input = rename_form.querySelector('#rename-input').value.trim();
+    const rename_input = document.querySelector('#rename-input').value.trim();
     if (!rename_input){
         alert("請輸入資料"); 
         return;
@@ -111,70 +63,40 @@ rename_form.addEventListener('submit', async function (e) {
             headers: {"content-type": "application/json"},
             body: JSON.stringify({"new_name": rename_input})
         });
-        
-        let rename_result = rename_form.querySelector('.rename-result');
-        if (!rename_result){
-            rename_result = document.createElement('div');
-            rename_result.className = "flex mb rename-result";
-        }
 
         if (result.ok === true){
-            rename_result.textContent = "更新成功";
-            stratup();
+            show_rename.textContent = "更新成功";
+            startup();
         } else {
-            rename_result.textContent = "更新失敗";
+            show_rename.textContent = "更新失敗";
         }
-        rename_form.append(rename_result);
     } catch (e){
-        if (e.status === 401){
-            const err_msg = e?.payload?.detail || "請先登入";
-            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
-            return;
+        const err_msg = handle_api_error(e);
+        if (err_msg){
+            show_rename.textContent = err_msg;
         }
-        if (e.status === 404){
-            const err_msg = e?.payload?.detail || "會員不存在";
-            alert(err_msg);
-            return;
-        }
-        const err_msg = 
-            e?.payload?.detail ||
-            (typeof e?.payload === 'string' ? e.payload : '') ||
-            e?.message || "發生錯誤，稍後再試";
-        alert(err_msg);
-    }  
+    }
 });
 
+// 誰查詢了我
 who_search_form.addEventListener('submit', async function (e) {
     e.preventDefault();
     try{
         const result = await fetchData("/api/member/extra/who_search");
-        console.log(result);
+        show_who_search.innerHTML = "";
         result.data.forEach((d) => {
             const timeStr = d.created_at.replace('T', ' ');
             const box = document.createElement('div');
-            box.className = "flex mb"
-            box.textContent = `${d.name}(${timeStr})`
-            who_search_form.append(box);
+            box.className = "mb";
+            box.textContent = `${d.name}(${timeStr})`;
+            show_who_search.append(box);
         }); 
     } catch (e){
-        if (e.status === 401){
-            const err_msg = e?.payload?.detail || "請先登入";
-            window.location.href = '/?msg=' + encodeURIComponent(err_msg);
-            return;
+        const err_msg = handle_api_error(e);
+        if (err_msg){
+            show_who_search.textContent = err_msg;
         }
-        if (e.status === 404){
-            const err_msg = e?.payload?.detail || "會員不存在";
-            alert(err_msg);
-            return;
-        }
-        const err_msg = 
-            e?.payload?.detail ||
-            (typeof e?.payload === 'string' ? e.payload : '') ||
-            e?.message || "發生錯誤，稍後再試";
-        alert(err_msg);
     }
- 
 });
 
-
-stratup();
+startup();

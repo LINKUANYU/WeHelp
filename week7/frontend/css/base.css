@@ -11,3 +11,4 @@ input{margin-left: 10px; margin-right: 10px;}
 .mb{margin-bottom: 10px;}
 .main{border: 1px solid; padding: 10px;}
 .flex{display: flex; justify-content: center;}
+#show-who-search{display: flex; flex-direction: column; align-items: center;}

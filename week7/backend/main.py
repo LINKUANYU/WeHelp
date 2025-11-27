@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import page, member
+from .routers import page, router
 from fastapi.staticfiles import StaticFiles
 from .path import FRONT_DIR
 import mysql.connector
@@ -18,7 +18,7 @@ app = FastAPI()
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.include_router(page.router)
-app.include_router(member.router)
+app.include_router(router.router)
 
 app.mount("/frontend", StaticFiles(directory=FRONT_DIR))
 

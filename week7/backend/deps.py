@@ -30,6 +30,7 @@ def get_cur(conn = Depends(get_conn)) -> Generator:
     finally:
         cur.close()
 
+# 用session驗證會員是否登入以及取得現在登入會員資訊
 def get_current_user(request: Request, cur = Depends(get_cur)):
     user_id = request.session.get("user_id")
     if not user_id:
