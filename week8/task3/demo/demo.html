@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/demo/demo.css">
+    <title>Document</title>
+</head>
+<body>
+    <header class="l-header flex">week8任務，CORS測試</header>
+    <!-- Card1 -->
+    <div class="card">
+        <p class="text-center">想知道答案嗎？</p>
+        <div class="flex">
+            <button onclick="fetch1()">取得資料</button>
+        </div>
+        <p class="text-center" id="result1"></p>
+    </div>
+    <!-- Card2 -->
+    <div class="card">
+        <p class="text-center">想知道答案嗎？</p>
+        <div class="flex">
+            <button onclick="fetch2()">取得資料</button>
+        </div>
+        <p class="text-center" id="result2"></p>
+    </div>
+    <script>
+        const result1 = document.querySelector('#result1');
+        const result2 = document.querySelector('#result2');
+        async function fetch_data(url){
+            try{
+                const res = await fetch(url);
+                if(res.ok){
+                    const data = res.json();
+                    return data;
+                }
+            }catch (e){
+                console.log(e.name, e.message);
+            }
+        }
+        // fetch_data("https://cwpeng.github.io/test/assignment-3-1");
+
+        async function fetch1() {
+            const data = await fetch_data("/api/data1");
+            console.log("測試", data);
+            result1.innerHTML = data.ok;
+            return
+        }
+        
+    </script>
+</body>
+</html>
