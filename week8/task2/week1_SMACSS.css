@@ -1,10 +1,23 @@
-/* 
+/* SMACSS 命名邏輯
+
 Base：設定「整個網站的預設樣子」。
 Layout：決定「區塊放在哪、怎麼排」。
 Module：定義「某個元件本身長什麼樣子」。
 State：標記「這個東西現在在什麼狀態」。
 Theme：套給元件的「不同皮膚 / 主題風格」。
- */
+
+1. 這個 class 是在決定「整個版面的大區塊」嗎？
+是 → 叫 Layout：.l-header, .l-main, .l-promos, .l-gallery
+
+2. 這個是某個可以被重複拿去別頁用的「元件」嗎？
+是 → 叫 Module：.nav, .nav__item, .card, .promo
+
+3.這是「暫時狀態」嗎？
+是 → 叫 State：.is-open, .is-loading, .is-disabled
+
+4.這是在換「主題樣式」嗎？
+是 → 叫 Theme：.theme-hero-primary, .theme-button-warning
+*/
 
 /* Base */
 html{
@@ -14,6 +27,10 @@ html{
 body{margin: 0px;}
 
 /* Layout */
+.l-header{
+    padding: 10px;
+}
+
 .l-main{
     width: 1200px;
     margin: 20px auto;
@@ -51,7 +68,6 @@ body{margin: 0px;}
 .m-nav{
     display: flex;
     align-items: center;
-    padding: 10px;
 }
 .m-nav__menu{
     display: flex;
@@ -63,7 +79,7 @@ body{margin: 0px;}
     text-align: center;
 }
 /* icon */
-.m-icon--hamburger{
+.m-nav__icon--hamburger{
     height: 30px;
     display: block;
 }

@@ -1,3 +1,15 @@
+/* OOCSS 命名邏輯
+
+1. 物件化（Object）：
+把常出現的結構當成「物件」，像 .media、.card、.layout-row、.nav
+這些 class 盡量「語意＋中立」，不要寫死在某個地方（例如不要叫 .header-right-menu）
+
+2. 結構（structure）跟 外觀（skin）分開：
+結構：排版、margin、flex、grid → .layout-row, .card
+外觀：顏色、字體、背景 → .bg-primary, .text-large, .btn-primary
+
+*/
+
 html{
     font-size: 20px;
     font-family: 'Times New Roman', Times, serif;
@@ -24,7 +36,7 @@ body{margin: 0px;}
 
 .u-display-desktop{ display: block; }
 .u-display-mobile{ display: none; }
-.icon-hamburger{
+.nav-icon-hamburger{
     height: 30px;
     display: block;
 }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <title>week1 assginment</title>
+        <link rel="stylesheet" type="text/css" href="week1_BEM.css">
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="header">
+            <div class="nav">
+                <div class="nav__brand">My website</div>
+                <div class="nav__menu">
+                    <div class="nav__item nav__item--desktop">Item 1</div>
+                    <div class="nav__item nav__item--desktop">Item 2</div>
+                    <div class="nav__item nav__item--desktop">Item 3</div>
+                    <div class="nav__item nav__item--desktop">Item 4</div>
+                    <img class="nav__icon nav__icon--mobile nav__icon--hamburger" src="https://cdn1.iconfinder.com/data/icons/jumpicon-basic-ui-line-1/32/-_Hamburger-Menu-More-Navigation-List-512.png">
+                </div>
+            </div>
+        </div>
+        <!-- Drawer -->
+        <div class="drawer">
+            <div class="drawer__close">
+                <img src="https://cdn2.iconfinder.com/data/icons/250-perfect-vector-pictograms/33/9.12-256.png">
+            </div>
+            <div class="drawer__item">Item 1</div>
+            <div class="drawer__item">Item 2</div>
+            <div class="drawer__item">Item 3</div>
+            <div class="drawer__item">Item 4</div>
+        </div>
+        <!-- Welcome -->
+        <div class="welcome">Welcome to MyHome</div>
+        <!-- Main -->
+        <div class="main">
+            <!-- Promo -->
+            <div class="promos">
+                <div class="promo__item promo__item--p1">
+                    <img class="promo__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <span>Promotion 1</span>
+                </div>
+                <div class="promo__item promo__item--p2">
+                    <img class="promo__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <span>Promotion 2</span>
+                </div>
+                <div class="promo__item promo__item--p3">
+                    <img class="promo__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <span>Promotion 3</span>
+                </div>
+            </div>
+            <!-- Gallery -->
+            <div class="gallery">
+                <div class="gallery__card gallery__card--t1">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 1</div>
+                </div>
+                <div class="gallery__card gallery__card--t2">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 2</div>
+                </div>
+                <div class="gallery__card gallery__card--t3">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 3</div>
+                </div>
+                <div class="gallery__card gallery__card--t4">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 4</div>
+                </div>
+                <div class="gallery__card gallery__card--t5">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 5</div>
+                </div>
+                <div class="gallery__card gallery__card--t6">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 6</div>
+                </div>
+                <div class="gallery__card gallery__card--t7">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 7</div>
+                </div>
+                <div class="gallery__card gallery__card--t8">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 8</div>
+                </div>
+                <div class="gallery__card gallery__card--t9">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 9</div>
+                </div>
+                <div class="gallery__card gallery__card--t10">
+                    <img class="card__img" src="https://www.taiwan.net.tw/att/1/big_scenic_spots/pic_7927_16.jpg">
+                    <img class="card__star" src="https://www.svgrepo.com/show/243542/star.svg">
+                    <div class="card__title">Title 10</div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const hamburger = document.querySelector('.nav__icon');
+            const drawer = document.querySelector('.drawer');
+            const close = document.querySelector('.drawer__close');
+            hamburger.addEventListener('click', () => {
+                drawer.classList.toggle('drawer--open');
+            })
+            close.addEventListener('click', ()=>{
+                drawer.classList.toggle('drawer--open');
+            })
+        </script>
+    </body>
+
+</html>

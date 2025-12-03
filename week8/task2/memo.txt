@@ -1,0 +1,63 @@
+Topic 2: CSS Selector Naming
+OOCSS, SMACSS, and BEM are 3 common naming guidelines for CSS Selector. These
+guidelines help us write more readable CSS code.
+
+
+Follow learning steps below to prepare your report:
+1. Introduce the concepts of OOCSS, SMACSS, and BEM naming guidelines.
+
+2. Tell us which naming guideline is your favorite, and give an example to demonstrate
+the main concept of that guideline. For example, you can demo how to apply the
+OOCSS naming guideline to the CSS code in our week 1 tasks.
+
+OOCSS 命名邏輯
+
+1. 物件化（Object）：
+把常出現的結構當成「物件」，像 .media、.card、.layout-row、.nav
+這些 class 盡量「語意＋中立」，不要寫死在某個地方（例如不要叫 .header-right-menu）
+
+2. 結構（structure）跟 外觀（skin）分開：
+結構：排版、margin、flex、grid → .layout-row, .card
+外觀：顏色、字體、背景 → .bg-primary, .text-large, .btn-primary
+
+SMACSS 命名邏輯
+
+Base：設定「整個網站的預設樣子」。
+Layout：決定「區塊放在哪、怎麼排」。
+Module：定義「某個元件本身長什麼樣子」。
+State：標記「這個東西現在在什麼狀態」。
+Theme：套給元件的「不同皮膚 / 主題風格」。
+
+1. 這個 class 是在決定「整個版面的大區塊」嗎？
+是 → 叫 Layout：.l-header, .l-main, .l-promos, .l-gallery
+
+2. 這個是某個可以被重複拿去別頁用的「元件」嗎？
+是 → 叫 Module：.nav, .nav__item, .card, .promo
+
+3.這是「暫時狀態」嗎？
+是 → 叫 State：.is-open, .is-loading, .is-disabled
+
+4.這是在換「主題樣式」嗎？
+是 → 叫 Theme：.theme-hero-primary, .theme-button-warning
+
+BEM 命名邏輯
+
+1. Block：獨立元件
+可以單獨存在、可以被重用
+如：nav, card, gallery, drawer, hero
+
+2. Element：block 裡的零件
+命名：block__element
+不能脫離 block 單獨存在
+如：nav__item, nav__menu, card__img, gallery__card, drawer__close
+
+3. Modifier：同一個 block 或 element 的變形 / 狀態 / 版本
+命名：block--mod / block__elem--mod
+一定要 疊在原本 class 上 使用
+如：nav__item--active, gallery__card--t1, drawer--open, hero--primary
+
+結論：我個人會喜歡用混搭的
+SMA的話喜歡用在大架構的地方用l-當作前綴，可以一看就知道這裡是來調整架構骨架用的，還有狀態is-也是一眼就知道是切換狀態的功能。
+BEM的話喜歡Block跟Element還有Modifier之間用__或--來做連結，也是可以一眼看出跟上下層的關聯性
+OOCSS的物件風格很方便，會常使用如flex, grid, mrgin，把它變成小工具加速喔在排版的時候不用再重打。
+

@@ -1,0 +1,209 @@
+/* BEM 命名邏輯
+
+1. Block：獨立元件
+可以單獨存在、可以被重用
+如：nav, card, gallery, drawer, hero
+
+2. Element：block 裡的零件
+命名：block__element
+不能脫離 block 單獨存在
+如：nav__item, nav__menu, card__img, gallery__card, drawer__close
+
+3. Modifier：同一個 block 或 element 的變形 / 狀態 / 版本
+命名：block--mod / block__elem--mod
+一定要 疊在原本 class 上 使用
+如：nav__item--active, gallery__card--t1, drawer--open, hero--primary
+
+*/
+html{
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+body{margin: 0px;}
+
+/* Header */
+.header{
+    padding: 10px;
+}
+.nav{
+    display: flex;
+    align-items: center;
+}
+
+.nav__menu{
+    justify-content: flex-end;
+    align-items: center;
+    flex: auto; /* auto fillout */
+    display: flex; 
+}
+.nav__item{
+    margin-left: 20px;
+    text-align: center;
+}
+.nav__icon--hamburger{
+    height: 30px;
+}
+.nav__item--desktop{display: block;}
+.nav__icon--mobile{display: none;}
+
+/* Drawer */
+.drawer{
+    background-color: white;
+    box-shadow: -8px 0 24px rgba(0,0,0,.12);
+    height: 100vh;
+    width: 100%;
+    max-width: 50%;
+    position: fixed;
+    top: 0;
+    right: -50%;
+    transition: .3s ease;
+    z-index: 1000;
+    
+}
+.drawer__close{
+    height: 20px; 
+    display: flex; 
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.drawer__item{
+    margin-bottom: 20px;
+    margin-left: 20px;
+    text-align: center;
+}
+
+.drawer--open{right: 0;}
+
+/* Welcome */
+.welcome{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:  #D6EBF6;
+    height: 250px;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+/* Main */
+.main{
+    width: 1200px;
+    margin: 20px auto;
+}
+/* Promos */
+.promos{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "p1 p1" "p2 p3";
+    column-gap: 20px;
+}
+.promo__item--p1{ grid-area: p1; }
+.promo__item--p2{ grid-area: p2; }
+.promo__item--p3{ grid-area: p3; }
+
+.promo__item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #D6EBF6;
+}
+.promo__img{
+    width: 80px;
+    height: 50px;
+    margin-right: 10px;
+}
+/* Gallery */
+.gallery{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "t1 t2 t3 t4 t5" "t6 t7 t8 t9 t10";
+    column-gap: 20px;
+}
+
+.gallery__card--t1{ grid-area: t1; }
+.gallery__card--t2{ grid-area: t2; }
+.gallery__card--t3{ grid-area: t3; }
+.gallery__card--t4{ grid-area: t4; }
+.gallery__card--t5{ grid-area: t5; }
+.gallery__card--t6{ grid-area: t6; }
+.gallery__card--t7{ grid-area: t7; }
+.gallery__card--t8{ grid-area: t8; }
+.gallery__card--t9{ grid-area: t9; }
+.gallery__card--t10{ grid-area: t10; }
+
+.gallery__card{
+    position: relative;
+    height: 200px;
+    margin-bottom: 20px;
+}
+.card__img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    z-index: 0;
+
+}
+
+.card__star{
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.5;
+    z-index: 2;
+}
+.card__title{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    
+}
+
+@media (max-width:1200px){
+    .main{
+        width: 90%;
+    }
+    .promos{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "p1 p2" "p3 p3";
+    column-gap: 20px;
+    }
+    .gallery{
+    display: grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-areas: "t1 t2 t3 t4" "t5 t6 t7 t8" "t9 t9 t10 t10";
+    column-gap: 20px;
+    }
+}
+
+@media (max-width:600px){
+    .nav__item--desktop{display: none;}
+    .nav__icon--mobile{display: block;}
+    
+    .main{
+        width: 90%;
+    }
+    .promos{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "p1" "p2" "p3";
+    }
+    .gallery{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "t1" "t2" "t3" "t4" "t5" "t6" "t7" "t8" "t9" "t10";
+    }
+    
+}
+
