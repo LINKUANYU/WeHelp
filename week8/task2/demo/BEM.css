@@ -1,0 +1,28 @@
+/* Block */
+.page__main{
+    max-width: 800px;
+    margin: 2rem auto;
+}
+.product-card{
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+/* Block Modifier */
+.product-card--promo{
+    background-color: orange;
+    background: #fff7e6;
+}
+/* Elemnets */
+.product-card__title{ font-size: 1.25rem; }
+.product-card__text{ margin: 0.5rem 1rem; }
+.product-card__btn{
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+}
+/* Elemnets Modifier */
+.product-card__btn--primary{
+    background-color: #007bff;
+    color: #fff;
+}

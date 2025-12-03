@@ -1,0 +1,196 @@
+/* 
+Base：設定「整個網站的預設樣子」。
+Layout：決定「區塊放在哪、怎麼排」。
+Module：定義「某個元件本身長什麼樣子」。
+State：標記「這個東西現在在什麼狀態」。
+Theme：套給元件的「不同皮膚 / 主題風格」。
+ */
+
+/* Base */
+html{
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+body{margin: 0px;}
+
+/* Layout */
+.l-main{
+    width: 1200px;
+    margin: 20px auto;
+}
+.l-promo{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "p1 p1" "p2 p3";
+    column-gap: 20px;
+}
+.l-promo-slot-1{ grid-area: p1; }
+.l-promo-slot-2{ grid-area: p2; }
+.l-promo-slot-3{ grid-area: p3; }
+
+.l-gallery{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "t1 t2 t3 t4 t5" "t6 t7 t8 t9 t10";
+    column-gap: 20px;
+}
+
+.l-gallery-slot-1{ grid-area: t1; }
+.l-gallery-slot-2{ grid-area: t2; }
+.l-gallery-slot-3{ grid-area: t3; }
+.l-gallery-slot-4{ grid-area: t4; }
+.l-gallery-slot-5{ grid-area: t5; }
+.l-gallery-slot-6{ grid-area: t6; }
+.l-gallery-slot-7{ grid-area: t7; }
+.l-gallery-slot-8{ grid-area: t8; }
+.l-gallery-slot-9{ grid-area: t9; }
+.l-gallery-slot-10{ grid-area: t10; }
+
+/* Module */
+/* Nav */
+.m-nav{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.m-nav__menu{
+    display: flex;
+    justify-content: end;
+    flex: auto;
+}
+.m-nav__item{
+    margin-left: 20px;
+    text-align: center;
+}
+/* icon */
+.m-icon--hamburger{
+    height: 30px;
+    display: block;
+}
+.m-icon--close{
+    height: 20px; 
+}
+/* drawer */
+.m-drawer{
+    background-color: white;
+    box-shadow: -8px 0 24px rgba(0,0,0,.12);
+    height: 100vh;
+    width: 100%;
+    max-width: 50%;
+    position: fixed;
+    top: 0;
+    right: -50%;
+    transition: .3s ease;
+    z-index: 1000;
+    
+}
+.m-drawer__close{
+    display: flex; 
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+.m-drawer__item{ margin-bottom: 20px; }
+.m-drawer.is-open{ right: 0; }
+
+/* welcome */
+.m-welcome{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:  #D6EBF6;
+    height: 250px;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+/* promo */
+.m-promo{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #D6EBF6;
+}
+.m-promo__img{
+    width: 80px;
+    height: 50px;
+    margin-right: 10px;
+}
+/* card */
+.m-card{
+    position: relative;
+    height: 200px;
+    margin-bottom: 20px;
+}
+.m-card__img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    z-index: 0;
+}
+.m-card__star{
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.5;
+    z-index: 2;
+}
+.m-card__title{
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5);;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    
+}
+
+/* State */
+.is-desktop-only{ display: block; }
+.is-mobile-only{ display: none; }
+
+/* RWD Layout */
+@media (max-width:1200px){
+    /* RWD + Layout */
+    .l-main{
+        width: 90%;
+    }
+    .l-promo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "p1 p2" "p3 p3";
+    column-gap: 20px;
+    }
+    .l-gallery{
+    display: grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-areas: "t1 t2 t3 t4" "t5 t6 t7 t8" "t9 t9 t10 t10";
+    column-gap: 20px;
+    }
+}
+@media (max-width:600px){
+    /* RWD + Layout */
+    .l-main{
+        width: 90%;
+    }
+    .l-promo{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "p1" "p2" "p3";
+    }
+    .l-gallery{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas: "t1" "t2" "t3" "t4" "t5" "t6" "t7" "t8" "t9" "t10";
+    }
+    /* RWD + State */
+    .is-desktop-only{ display: none; }
+    .is-mobile-only{ display: block; }
+}

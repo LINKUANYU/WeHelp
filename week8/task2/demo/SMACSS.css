@@ -1,0 +1,36 @@
+/* SMACSS */
+/* Layout 類 */
+.l-main{
+    max-width: 800px;
+    margin: 2rem auto;
+}
+/* Module：卡片 */
+.m-card{
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.m-card--promo{
+    border-color: orange;
+    background: #fff7e6;
+}
+/* State：狀態 */
+.is-featured{
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.m-card__title{ font-size: 1.25rem; }
+.m-card__text{ margin: 0.5rem 1rem; }
+
+/* Module：按鈕 */
+.m-btn{
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+}
+
+.m-btn--primary{
+    background: #007bff;
+    color: #fff;
+}
