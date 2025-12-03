@@ -1,0 +1,34 @@
+Topic 3: Fetch and CORS
+Using built-in JavaScript fetch function, we can send HTTP requests to the back-end and get
+HTTP responses without refreshing or redirecting the page. Cross Origin Resource Sharing
+(CORS) concept plays a critical role if we want to send a request to a different domain with
+the fetch function.
+
+Follow learning steps below to prepare your report:
+1. What is CORS?
+在瀏覽器的安全模型中，「來源」 (Origin) 由三個部分定義：協定 (Protocol)、域名 (Domain) 和 連接埠 (Port)。
+只有當一個請求的這三個部分與當前網頁的來源完全相同時，才被視為「同源」 (Same-Origin)。如果其中任何一個部分不同，即為「跨來源」 (Cross-Origin)。
+重點：CORS 保護的是「使用者在瀏覽器裡」的安全，阻止一個惡意網站能夠透過 JavaScript 偷用你登入 A 網站的 cookie，幫你偷偷對 A 打 API、拿資料
+CORS 就是一種機制，允許伺服器「放行」這些被 SOP 限制的跨來源請求，使瀏覽器能夠安全地讀取回應。
+CORS 是一套規則：讓 伺服器 告訴 瀏覽器「哪些網頁來源 (origin) 可以讀取我這個資源？」
+如果有開放CORS的話會在 Response Header Access-Control-Allow-Origin 註明對哪些網域開放。
+
+2. Can we use the fetch function in our localhost page, to send a request to
+https://www.google.com/ and get a response?
+答案是不行。
+瀏覽器從發出fetch HTTP請求帶上Orogin Header，
+google伺服器也有回應資料，但是 Response Header 中沒有 Access-Control-Allow-Origin，或是與我的origin不匹配，
+瀏覽器檢查CORS 失敗，fetch Promise 被拒絕，console出現錯誤訊息，瀏覽器無法解讀得到的訊息。
+demo.html:1 Access to fetch at 'https://www.google.com/' from origin 'null' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+
+3. Can we use the fetch function in our localhost page, to send a request to
+https://cwpeng.github.io/test/assignment-3-1 and get a response? Compared to the
+previous case, what’s the difference?
+因為這個API是有開放的，所以請求成功，可以瀏覽器可以讀取資料。
+可以在開發人員工具中的 Response Header 中 Access-Control-Allow-Origin 顯示 ＊  
+
+
+
+4. How to share APIs we developed to other domains, just like what we experienced in
+step 3. Could you give us an example?
