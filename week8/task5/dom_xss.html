@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="base.css">
+    <title>DOM XSS Demo</title>
+</head>
+<body>
+    <header class="l-header flex">week8任務：DOM XSS Demo</header>
+    <!-- Demo -->
+    <div class="card">
+        <p class="text-center">網址列 ?msg= 的內容會顯示在下面：</p>
+        <div class="text-center" id="msg"></div>
+    </div>
+    <script>
+        const params = new URLSearchParams(location.search);
+        const msg = params.get("msg") || "";
+
+        document.querySelector('#msg').innerHTML = msg;
+        // 開啟後網址輸入.../dom_xss.html?msg=<img src=x onerror="alert('DOM XSS!')">
+        // 補充因為innerHTML塞入的<script>會當成字串，所以必須用上面的onerror才會觸發
+    </script>
+</body>
+</html>

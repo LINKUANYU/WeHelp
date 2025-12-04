@@ -1,0 +1,18 @@
+body{
+    margin: 0px;
+}
+.l-header{
+    height: 100px;
+    background-color: rgba(26, 45, 56, 1);
+    font-size: 3rem; 
+    font-weight: bold;
+    color: white;
+}
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.text-center{
+    text-align: center;
+}
