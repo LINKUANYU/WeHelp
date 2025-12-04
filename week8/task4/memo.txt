@@ -1,0 +1,36 @@
+Topic 4: Connection Pool
+The standard procedure to work with databases is: connect, execute SQL statements, and
+finally close the connection. Connection Pool is a programming technique to make the
+connection between back-end system and database more stable, and increase overall
+throughput.
+
+Follow learning steps below to prepare your report:
+1. What is Connection Pool? Why do we want to use Connection Pool?
+
+Connection Pool（連線池）就是「先準備好一批跟資料庫的連線，大家輪流借來用，用完再還」，而不是每次請求都重新連線再關掉。
+初始化 : 當應用程式啟動時，連線池會根據設定預先建立固定數量的資料庫連線，並將它們保持在開啟狀態。
+連線請求 : 當應用程式需要執行 SQL 操作時，它會向連線池請求一個可用的連線。如果池中有閒置連線，它會立即被提供給應用程式使用。
+連線歸還 : 應用程式完成資料庫操作後，會執行一個「關閉連線」的操作。但此時，連線池並不會真正關閉底層的實體連線，而是將其標記為閒置 (Idle)，並放回池中，等待下一次重複使用。
+
+
+(1) 效能提升：
+建立連線本身就很花時間 TCP 連線、SSL、帳密驗證、載入設定…，有 pool 之後，這些成本只在「啟動時」或偶爾補連線時發生，大部分請求都只是「拿現成的連線來用」，速度快很多。
+
+(2) 支援高併發，避免 DB 被打爆：
+沒有 pool 時，如果你讓程式隨便 connect()：，同一瞬間有 500 個 request，就可能出現 500 條 DB 連線，資料庫最大連線數通常有限（例如 100、200），超過就開始拒絕、新連線變慢、甚至整個 DB 掛掉
+有 pool 時你可以設定：max pool size = 20，最多就只有 20 條 DB 連線正在被使用，比較「可控」，太多 request → 多的排隊等連線，但 DB 至少不會被無限連線打死。
+
+(3) 更穩定，處理壞掉的連線：
+連線有時候會，因為網路問題中斷、DB restart、idle 太久被 DB 端關掉。
+有些 pool 會幫你在拿連線前檢查健康度（ping 一下），發現壞掉就丟掉，開一條新的補進池裡，你就不用每個地方都自己寫「如果連線壞了要怎麼重試」。
+
+(4) 資源管理：
+你不用在每個 function 裡自己記得 connect()/close()，只要拿一個「session」或「connection」來用，用完交回去，程式碼更乾淨，也比較不容易忘記 close 造成「連線洩漏」。
+
+2. How to create a Connection Pool by the official mysql-connector-python package?
+
+
+
+3. If we want to make database operations, we get a connection from Connection Pool,
+execute SQL statements, and finally return connection back to the Connection Pool.
+Demo your code which implements the above procedure.
