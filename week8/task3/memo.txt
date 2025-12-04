@@ -16,7 +16,7 @@ CORS 是一套規則：讓 伺服器 告訴 瀏覽器「哪些網頁來源 (orig
 2. Can we use the fetch function in our localhost page, to send a request to
 https://www.google.com/ and get a response?
 答案是不行。
-瀏覽器從發出fetch HTTP請求帶上Orogin Header，
+瀏覽器從發出fetch HTTP請求帶上Origin Header，
 google伺服器也有回應資料，但是 Response Header 中沒有 Access-Control-Allow-Origin，或是與我的origin不匹配，
 瀏覽器檢查CORS 失敗，fetch Promise 被拒絕，console出現錯誤訊息，瀏覽器無法解讀得到的訊息。
 demo.html:1 Access to fetch at 'https://www.google.com/' from origin 'null' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
@@ -27,7 +27,6 @@ https://cwpeng.github.io/test/assignment-3-1 and get a response? Compared to the
 previous case, what’s the difference?
 因為這個API是有開放的，所以請求成功，可以瀏覽器可以讀取資料。
 可以在開發人員工具中的 Response Header 中 Access-Control-Allow-Origin 顯示 ＊  
-
 
 
 4. How to share APIs we developed to other domains, just like what we experienced in

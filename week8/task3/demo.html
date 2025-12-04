@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="demo.css">
+    <title>Document</title>
+</head>
+<body>
+    <header class="l-header flex">week8任務CORS測試</header>
+    <!-- DEMO1 -->
+    <div class="card">
+        <p class="text-center">未開放CORS，點擊測試看看是否能取得資料？</p>
+        <div class="flex">
+            <button onclick="demo1()">取得資料</button>
+        </div>
+        <p class="text-center" id="result1"></p>
+    </div>
+    <hr>
+    <!-- DEMO2 -->
+    <div class="card">
+        <p class="text-center">有開放CORS，點擊測試看看是否能取得資料？</p>
+        <div class="flex">
+            <button onclick="demo2()">取得資料</button>
+        </div>
+        <p class="text-center" id="result2"></p>
+    </div>
+    <script>
+        // 顯示答案
+        const result1 = document.querySelector('#result1');
+        const result2 = document.querySelector('#result2');
+        // 抓資料工具
+        async function fetch_data(url){
+            try{
+                const res = await fetch(url); 
+                // 如果response 是2xx 就解json **若因CORS被擋則會跳catch，
+                if(res.ok){
+                    const data = await res.json();
+                    return data;
+                }
+            }catch (e){
+                // 如果有錯誤就印出
+                console.log(e);
+            }
+        }
+        // demo1 按鈕上的Function
+        async function demo1() {
+            const data = await fetch_data("http://127.0.0.1:8000/api/demo1");
+            if (data){
+                console.log("測試", data);
+                result1.innerHTML = data.msg;
+                return                
+            }else{
+                result1.innerHTML = "失敗，請在console確認錯誤訊息"
+            }
+        }
+        // demo2 按鈕上的Function
+        async function demo2() {
+            const data = await fetch_data("http://127.0.0.1:8000/api/demo2");
+            if (data){
+                console.log("測試", data);
+                result2.innerHTML = data.msg;
+                return
+            }else{
+                result2.innerHTML = "失敗，請在console確認錯誤訊息"
+            }
+        }
+    </script>
+</body>
+</html>
