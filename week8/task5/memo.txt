@@ -24,7 +24,7 @@ Follow learning steps below to prepare your report:
 危害： 較高。難以被伺服器端防火牆檢測。
 
 攻擊的目標通常是網站的用戶，而不是網站伺服器本身。一旦惡意腳本在用戶的瀏覽器中執行，攻擊者可以：
-竊取 Session Cookies： 盜取用戶的 Session ID，從而劫持用戶的身份（Session Hijacking），無需密碼即可登入。
+竊取 Session Cookies： 盜取用戶的 Session ID，從而劫持用戶的身份，無需密碼即可登入。
 獲取用戶輸入： 記錄用戶在表單中輸入的敏感信息，如密碼或信用卡號。
 篡改網頁內容： 改變用戶看到的網頁內容，進行釣魚（Phishing）攻擊。
 執行惡意操作： 利用用戶的權限在網站上執行用戶不該執行的操作（例如，發送電子郵件或刪除帳戶）。
@@ -34,3 +34,5 @@ work.
 
 
 3. Based on the scenario you did in the previous step, how could it be prevented?
+
+XSS 的核心防禦 = 對「輸出」做正確的編碼 / 轉義（escape）

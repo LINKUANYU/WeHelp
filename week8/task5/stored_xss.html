@@ -10,22 +10,19 @@
     <header class="l-header flex">week8任務：Stored XSS Demo</header>
     <!-- Demo -->
     <div class="card">
-        <p class="text-center">留言板</p>
+        <p class="text-center">留言板(jinja engine)</p>
         <form class="flex" action="/comment" method="post">
             <input name="content" autocomplete="off">
-            <button type="submit">輸入留言</button>
+            <button type="submit">留言</button>
         </form>
         <div class="text-center">留言列表：</div>
         {% if comment %}
             {% for c in comment %}
-            <div class="text-center">{{c | safe}}</div>
+            <div class="text-center">{{c}}</div>
             {% endfor %}
         {% else %}
             <div class="text-center">目前沒有留言</div>
         {% endif %}
-        <!-- 攻擊者直接輸入惡意程式存進資料庫，每當有人查看資料就會跑出來
-        <script>alert("XSS ATTACK")</script> 
-        -->
     </div>
 </body>
 </html>

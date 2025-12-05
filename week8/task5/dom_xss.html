@@ -10,16 +10,36 @@
     <header class="l-header flex">week8任務：DOM XSS Demo</header>
     <!-- Demo -->
     <div class="card">
+        <h3 class="text-center">Demo：設計不良的JS</h3>
         <p class="text-center">網址列 ?msg= 的內容會顯示在下面：</p>
         <div class="text-center" id="msg"></div>
     </div>
+    <hr>
     <script>
+        // Demo1：設計不良
         const params = new URLSearchParams(location.search);
         const msg = params.get("msg") || "";
 
         document.querySelector('#msg').innerHTML = msg;
         // 開啟後網址輸入.../dom_xss.html?msg=<img src=x onerror="alert('DOM XSS!')">
-        // 補充因為innerHTML塞入的<script>會當成字串，所以必須用上面的onerror才會觸發
+        // 補充：innerHTML塞入的<script>字串在多數的瀏覽器會建立<script>但不會執行(因為XSS），所以DOM_XSS 更多會用上面的onerror才會觸發。
+
+        // Demo2：設計良好的
+        // document.querySelector('#msg').textContent = msg;
+        
+        // 防禦概念：使用其他標籤組合取代innerHTML
+        
+        // textContent / innerText 一定轉換成純文字沒問題
+        
+        // setAttribute 不一定絕對安全，看使用者輸入。
+        // 安全：img.setAttribute("alt", userInput); // 只是替代文字。
+        // 不安全： el.setAttribute("onclick", userInput); // 使用者輸入變JS
+        
+        // createElement + appendChild 不一定絕對安全，看你掛了什麼資料
+        // const script = document.createElement("script");
+        // script.textContent = userInput;  // 使用者輸入 → 變成 JS 內容
+        // document.body.appendChild(script);  // → 執行
+
     </script>
 </body>
 </html>

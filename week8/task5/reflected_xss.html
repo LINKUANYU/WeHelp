@@ -10,15 +10,12 @@
     <header class="l-header flex">week8任務：Reflected XSS Demo</header>
     <!-- Demo -->
     <div class="card">
-        <p class="text-center">搜尋頁</p>
+        <h3 class="text-center">正常的網站搜尋頁(jinja engine)</h3>
         <form class="flex" action="/search">
             <input name="q" autocomplete="off">
             <button type="submit">搜尋</button>
         </form>
-        <div class="text-center">你搜尋了：{{q | safe}}</div>
-        <!-- 最後將有問題的網址散播在任何地方給受害者點
-        http://127.0.0.1:8000/search?q=%3Cscript%3Ealert(%27XSS%E6%94%BB%E6%93%8A%EF%BC%8C%E4%BD%A0%E4%B8%AD%E7%8D%8E%E5%95%A6%27)%3C/script%3E
-        -->
+        <div class="text-center">你搜尋了：{{q}}</div>
     </div>
 </body>
 </html>
